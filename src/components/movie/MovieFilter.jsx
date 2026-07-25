@@ -1,4 +1,4 @@
-import { genres } from "../../data/movies";
+import { genres } from "../../data/movie";
 
 export default function MovieFilter({ filters, setFilters, resultCount }) {
   const update = (key) => (event) => setFilters((current) => ({ ...current, [key]: event.target.value }));

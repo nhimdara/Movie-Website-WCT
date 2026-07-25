@@ -1,54 +1,29 @@
 import { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import seedMovies, { createMovieRecord, MOVIE_STORE } from "../data/movies";
+import seedMovies, {
+  createMovieRecord,
+  DEFAULT_PREFERENCES,
+  DEFAULT_SITE_SETTINGS,
+  INITIAL_REVIEWS,
+  MOVIE_STORE,
+  STORE_KEYS,
+} from "../data/movie";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 export const MovieContext = createContext(null);
 const seedMoviesById = new Map(seedMovies.map(movie => [Number(movie.id), movie]));
 
-const initialReviews = [
-  { id: 1, movieId: 1, initials: "SK", author: "Sofia Kim", time: "12 min ago", movie: "Beyond the Horizon", rating: 5, copy: "A beautiful, patient piece of science fiction. The final act stayed with me.", status: "pending" },
-  { id: 2, movieId: 2, initials: "JR", author: "James Rivera", time: "1 hour ago", movie: "Neon Abyss", rating: 4.5, copy: "Electric visuals and a brilliant lead performance. I wanted a little more from the ending.", status: "pending" },
-  { id: 3, movieId: 5, initials: "AL", author: "Amelia Lee", time: "3 hours ago", movie: "The Last Signal", rating: 4.8, copy: "Quietly devastating. One of the strongest films in the catalogue.", status: "pending" },
-];
-
-export const defaultSiteSettings = {
-  brandName: "CineVault",
-  logo: "/images/branding/movie-logo.webp",
-  heroLabel: "CineVault Original",
-  heroNote: "Featured this week",
-  featuredMovieId: "",
-  topRowTitle: "Top 10 on CineVault Today",
-  trendingTitle: "Trending Now",
-  newReleasesTitle: "New Releases",
-  newsletterTitle: "Your next obsession is waiting.",
-  newsletterCopy: "Get fresh releases and hand-picked recommendations sent to your inbox.",
-  footerTagline: "Thoughtfully curated films for people who believe every great story deserves to be found.",
-  contactEmail: "hello@cinevault.example",
-  location: "Phnom Penh, Cambodia",
-  aboutHeading: "Good films find you.",
-  aboutCopy: "CineVault is a movie discovery experience created around a simple idea: choosing what to watch should feel inspiring.",
-  contactHeading: "Let’s talk cinema.",
-  contactCopy: "Questions, feedback or a film we should know about? Send us a note.",
-  announcement: "",
-  showGenres: true,
-  showContinueWatching: true,
-  showTopRow: true,
-  showTrending: true,
-  showNewReleases: true,
-  showGenreRows: true,
-  showNewsletter: true,
-};
+export const defaultSiteSettings = DEFAULT_SITE_SETTINGS;
 
 export function MovieProvider({ children }) {
   const [storedMovies, setStoredMovies] = useLocalStorage(MOVIE_STORE.key, seedMovies);
-  const [favourites, setFavourites] = useLocalStorage("cinevault-favourites", []);
-  const [watchlist, setWatchlist] = useLocalStorage("cinevault-watchlist", []);
-  const [reviews, setReviews] = useLocalStorage("cinevault-reviews", initialReviews);
-  const [subscribers, setSubscribers] = useLocalStorage("cinevault-subscribers", []);
-  const [messages, setMessages] = useLocalStorage("cinevault-messages", []);
-  const [preferences, setPreferences] = useLocalStorage("cinevault-preferences", { reports: true, reviews: true, publish: false });
-  const [viewHistory, setViewHistory] = useLocalStorage("cinevault-view-history", []);
-  const [storedSiteSettings, setStoredSiteSettings] = useLocalStorage("cinevault-site-settings", defaultSiteSettings);
+  const [favourites, setFavourites] = useLocalStorage(STORE_KEYS.favourites, []);
+  const [watchlist, setWatchlist] = useLocalStorage(STORE_KEYS.watchlist, []);
+  const [reviews, setReviews] = useLocalStorage(STORE_KEYS.reviews, INITIAL_REVIEWS);
+  const [subscribers, setSubscribers] = useLocalStorage(STORE_KEYS.subscribers, []);
+  const [messages, setMessages] = useLocalStorage(STORE_KEYS.messages, []);
+  const [preferences, setPreferences] = useLocalStorage(STORE_KEYS.preferences, DEFAULT_PREFERENCES);
+  const [viewHistory, setViewHistory] = useLocalStorage(STORE_KEYS.viewHistory, []);
+  const [storedSiteSettings, setStoredSiteSettings] = useLocalStorage(STORE_KEYS.siteSettings, defaultSiteSettings);
   const [trailer, setTrailer] = useState(null);
   const [toast, setToast] = useState("");
   const toastTimerRef = useRef(null);

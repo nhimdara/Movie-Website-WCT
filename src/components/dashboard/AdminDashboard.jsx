@@ -1,5 +1,5 @@
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
-import { genres, moviePoster } from "../../data/movies";
+import { genres, moviePoster } from "../../data/movie";
 import { AuthContext } from "../../context/AuthContext";
 import useMovies from "../../hooks/useMovies";
 import "./AdminDashboard.css";

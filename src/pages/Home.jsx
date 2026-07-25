@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { HeartIcon, PlayIcon, PlusIcon } from "../components/common/Icons";
 import MovieBanner from "../components/movie/MovieBanner";
-import { moviePoster } from "../data/movies";
+import { moviePoster } from "../data/movie";
 import useMovies from "../hooks/useMovies";
 
 function StreamingCard({

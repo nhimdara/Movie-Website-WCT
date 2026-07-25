@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { moviePoster } from "../data/movies";
+import { moviePoster } from "../data/movie";
 import useMovies from "../hooks/useMovies";
 import { AuthContext } from "../context/AuthContext";
 import RatingStars from "../components/movie/RatingStars";

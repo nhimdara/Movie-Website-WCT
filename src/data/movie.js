@@ -1,7 +1,70 @@
+export const STORE_KEYS = Object.freeze({
+  movies: "cinevault-movies",
+  favourites: "cinevault-favourites",
+  watchlist: "cinevault-watchlist",
+  reviews: "cinevault-reviews",
+  subscribers: "cinevault-subscribers",
+  messages: "cinevault-messages",
+  preferences: "cinevault-preferences",
+  viewHistory: "cinevault-view-history",
+  siteSettings: "cinevault-site-settings",
+  user: "cinevault-user",
+  session: "cinevault-session",
+  accounts: "cinevault-accounts",
+  theme: "cinevault-theme",
+});
+
 export const MOVIE_STORE = {
-  key: "cinevault-movies",
+  key: STORE_KEYS.movies,
   version: 1,
 };
+
+export const DEFAULT_PREFERENCES = Object.freeze({
+  reports: true,
+  reviews: true,
+  publish: false,
+});
+
+export const DEFAULT_SITE_SETTINGS = Object.freeze({
+  brandName: "CineVault",
+  logo: "/images/branding/movie-logo.webp",
+  heroLabel: "CineVault Original",
+  heroNote: "Featured this week",
+  featuredMovieId: "",
+  topRowTitle: "Top 10 on CineVault Today",
+  trendingTitle: "Trending Now",
+  newReleasesTitle: "New Releases",
+  newsletterTitle: "Your next obsession is waiting.",
+  newsletterCopy: "Get fresh releases and hand-picked recommendations sent to your inbox.",
+  footerTagline: "Thoughtfully curated films for people who believe every great story deserves to be found.",
+  contactEmail: "hello@cinevault.example",
+  location: "Phnom Penh, Cambodia",
+  aboutHeading: "Good films find you.",
+  aboutCopy: "CineVault is a movie discovery experience created around a simple idea: choosing what to watch should feel inspiring.",
+  contactHeading: "Let’s talk cinema.",
+  contactCopy: "Questions, feedback or a film we should know about? Send us a note.",
+  announcement: "",
+  showGenres: true,
+  showContinueWatching: true,
+  showTopRow: true,
+  showTrending: true,
+  showNewReleases: true,
+  showGenreRows: true,
+  showNewsletter: true,
+});
+
+export const INITIAL_REVIEWS = Object.freeze([
+  { id: 1, movieId: 1, initials: "SK", author: "Sofia Kim", time: "12 min ago", movie: "Beyond the Horizon", rating: 5, copy: "A beautiful, patient piece of science fiction. The final act stayed with me.", status: "pending" },
+  { id: 2, movieId: 2, initials: "JR", author: "James Rivera", time: "1 hour ago", movie: "Neon Abyss", rating: 4.5, copy: "Electric visuals and a brilliant lead performance. I wanted a little more from the ending.", status: "pending" },
+  { id: 3, movieId: 5, initials: "AL", author: "Amelia Lee", time: "3 hours ago", movie: "The Last Signal", rating: 4.8, copy: "Quietly devastating. One of the strongest films in the catalogue.", status: "pending" },
+]);
+
+export const DEMO_ADMIN = Object.freeze({
+  name: "Alex Morgan",
+  email: "admin@cinevault.com",
+  password: "admin123",
+  role: "Administrator",
+});
 
 export const MOVIE_DEFAULTS = {
   title: "",
@@ -41,6 +104,8 @@ const movieRecords = [
     genre: "Science Fiction",
     rating: 9.2,
     image: "movie-1.jpg",
+    trailerUrl: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+    videoUrl: "https://www.youtube.com/watch?v=eRsGyueVLvQ",
     description:
       "An explorer follows a mysterious signal through a fractured corner of space, risking everything for a final chance at home.",
     director: "Mara Venn",
@@ -54,6 +119,8 @@ const movieRecords = [
     genre: "Thriller",
     rating: 8.7,
     image: "movie-2.jpg",
+    trailerUrl: "https://www.youtube.com/watch?v=eRsGyueVLvQ",
+    videoUrl: "https://www.youtube.com/watch?v=R6MlUcmOul8",
     description:
       "A courier discovers the package she is carrying can rewrite the memories of an entire city.",
     director: "Eli Warren",
@@ -67,6 +134,8 @@ const movieRecords = [
     genre: "Drama",
     rating: 8.4,
     image: "movie-3.jpg",
+    trailerUrl: "https://www.youtube.com/watch?v=R6MlUcmOul8",
+    videoUrl: "https://www.youtube.com/watch?v=Y-rmzh0PI3c",
     description:
       "Two estranged sisters return to their coastal hometown on the longest day of the year.",
     director: "Nadia Sol",
@@ -80,6 +149,8 @@ const movieRecords = [
     genre: "Thriller",
     rating: 8.9,
     image: "movie-4.jpg",
+    trailerUrl: "https://www.youtube.com/watch?v=Y-rmzh0PI3c",
+    videoUrl: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
     description:
       "A celebrated photographer sees a crime hidden inside one of her unfinished portraits.",
     director: "Jonas Rook",
@@ -93,6 +164,8 @@ const movieRecords = [
     genre: "Science Fiction",
     rating: 9.1,
     image: "movie-5.jpg",
+    trailerUrl: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+    videoUrl: "https://www.youtube.com/watch?v=eRsGyueVLvQ",
     description:
       "At the end of the world, an isolated radio operator receives a transmission that should not exist.",
     director: "Amara Quinn",
@@ -106,6 +179,8 @@ const movieRecords = [
     genre: "Documentary",
     rating: 8.5,
     image: "movie-6.jpg",
+    trailerUrl: "https://www.youtube.com/watch?v=eRsGyueVLvQ",
+    videoUrl: "https://www.youtube.com/watch?v=R6MlUcmOul8",
     description:
       "An intimate study of four climbers attempting an uncharted winter ascent.",
     director: "Cole Mercer",
@@ -119,6 +194,8 @@ const movieRecords = [
     genre: "Drama",
     rating: 8.2,
     image: "movie-7.jpg",
+    trailerUrl: "https://www.youtube.com/watch?v=R6MlUcmOul8",
+    videoUrl: "https://www.youtube.com/watch?v=Y-rmzh0PI3c",
     description:
       "A hotel concierge becomes the only witness to a billionaire's carefully staged disappearance.",
     director: "Yuki Aster",
@@ -132,6 +209,8 @@ const movieRecords = [
     genre: "Thriller",
     rating: 8.0,
     image: "movie-8.jpg",
+    trailerUrl: "https://www.youtube.com/watch?v=Y-rmzh0PI3c",
+    videoUrl: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
     description:
       "A night-shift paramedic realizes every emergency call is leading her toward the same address.",
     director: "Faye Holt",
@@ -145,6 +224,8 @@ const movieRecords = [
     genre: "Adventure",
     rating: 8.8,
     image: "movie-9.jpg",
+    trailerUrl: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+    videoUrl: "https://www.youtube.com/watch?v=eRsGyueVLvQ",
     description:
       "A crew of storm pilots crosses a world where the atmosphere is breaking apart.",
     director: "Rian West",
@@ -158,6 +239,8 @@ const movieRecords = [
     genre: "Documentary",
     rating: 7.9,
     image: "movie-10.jpg",
+    trailerUrl: "https://www.youtube.com/watch?v=eRsGyueVLvQ",
+    videoUrl: "https://www.youtube.com/watch?v=R6MlUcmOul8",
     description:
       "A breathtaking account of endurance, friendship and impossible vertical terrain.",
     director: "Milo Hart",
@@ -171,6 +254,8 @@ const movieRecords = [
     genre: "Science Fiction",
     rating: 8.6,
     image: "movie-11.jpg",
+    trailerUrl: "https://www.youtube.com/watch?v=R6MlUcmOul8",
+    videoUrl: "https://www.youtube.com/watch?v=Y-rmzh0PI3c",
     description:
       "The last firefighter on Mars uncovers the code that started a planet-wide catastrophe.",
     director: "Celeste Wynn",
@@ -184,6 +269,8 @@ const movieRecords = [
     genre: "Adventure",
     rating: 8.1,
     image: "movie-12.jpg",
+    trailerUrl: "https://www.youtube.com/watch?v=Y-rmzh0PI3c",
+    videoUrl: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
     description:
       "A cartographer enters an underground ocean to find a missing expedition.",
     director: "Oren Pike",
@@ -191,22 +278,9 @@ const movieRecords = [
   },
 ];
 
-// Demo playback sources for the fictional seed catalogue. Replace these with
-// the real YouTube links for each movie when they are available.
-const demoYouTubeVideos = [
-  "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
-  "https://www.youtube.com/watch?v=eRsGyueVLvQ",
-  "https://www.youtube.com/watch?v=R6MlUcmOul8",
-  "https://www.youtube.com/watch?v=Y-rmzh0PI3c",
-];
-
 // This is the complete seed catalogue. Every exported record contains every
 // field defined in MOVIE_DEFAULTS, including trailer, poster and publish state.
-const movies = movieRecords.map((movie, index) => createMovieRecord({
-  ...movie,
-  trailerUrl: demoYouTubeVideos[index % demoYouTubeVideos.length],
-  videoUrl: demoYouTubeVideos[(index + 1) % demoYouTubeVideos.length],
-}));
+const movies = movieRecords.map(createMovieRecord);
 
 export const genres = [
   "Science Fiction",

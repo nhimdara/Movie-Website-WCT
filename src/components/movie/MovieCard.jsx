@@ -1,4 +1,4 @@
-import { moviePoster } from "../../data/movies";
+import { moviePoster } from "../../data/movie";
 import useMovies from "../../hooks/useMovies";
 import RatingStars from "./RatingStars";
 import { HeartIcon, PlayIcon, PlusIcon } from "../common/Icons";

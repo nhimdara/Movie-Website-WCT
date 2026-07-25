@@ -1,5 +1,6 @@
 import { createContext, useCallback, useMemo } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
+import { DEMO_ADMIN, STORE_KEYS } from "../data/movie";
 
 export const AuthContext = createContext(null);
 
@@ -10,13 +11,13 @@ async function hashPassword(password) {
 }
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useLocalStorage("cinevault-user", null);
-  const [session, setSession] = useLocalStorage("cinevault-session", null);
-  const [accounts, setAccounts] = useLocalStorage("cinevault-accounts", []);
+  const [user, setUser] = useLocalStorage(STORE_KEYS.user, null);
+  const [session, setSession] = useLocalStorage(STORE_KEYS.session, null);
+  const [accounts, setAccounts] = useLocalStorage(STORE_KEYS.accounts, []);
 
   const register = useCallback(async (details) => {
     const email = details.email.trim().toLowerCase();
-    const exists = email === "admin@cinevault.com" || accounts.some(account => account.email === email);
+    const exists = email === DEMO_ADMIN.email || accounts.some(account => account.email === email);
     if (exists) return { ok: false, message: "An account with this email already exists." };
 
     const account = {
@@ -32,7 +33,7 @@ export function AuthProvider({ children }) {
 
   const login = useCallback(async (emailValue, password) => {
     const email = emailValue.trim().toLowerCase();
-    const isDemoAdmin = email === "admin@cinevault.com" && password === "admin123";
+    const isDemoAdmin = email === DEMO_ADMIN.email && password === DEMO_ADMIN.password;
     const account = accounts.find(item => item.email === email);
     const validAccount = account && account.passwordHash === await hashPassword(password);
 
@@ -41,7 +42,7 @@ export function AuthProvider({ children }) {
     }
 
     const profile = isDemoAdmin
-      ? { name: "Alex Morgan", email, role: "Administrator", avatar: user?.email === email ? user.avatar || "" : "" }
+      ? { name: DEMO_ADMIN.name, email, role: DEMO_ADMIN.role, avatar: user?.email === email ? user.avatar || "" : "" }
       : { name: account.name, email: account.email, role: account.role, avatar: account.avatar || "" };
     setUser(profile);
     setSession({ ...profile, signedIn: true, signedInAt: new Date().toISOString() });

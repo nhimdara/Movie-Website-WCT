@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { moviePoster } from "../../data/movies";
+import { moviePoster } from "../../data/movie";
 import useMovies from "../../hooks/useMovies";
 
 export default function SearchBar({ open, onClose }) {

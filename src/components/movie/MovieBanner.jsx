@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import useMovies from "../../hooks/useMovies";
-import { moviePoster } from "../../data/movies";
+import { moviePoster } from "../../data/movie";
 import { PlayIcon, PlusIcon } from "../common/Icons";
 
 export default function MovieBanner() {
