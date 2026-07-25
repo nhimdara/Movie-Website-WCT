@@ -1,0 +1,13 @@
+@keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+.hero-content { animation: rise .8s .1s both; }
+.movie-card { animation: rise .55s both; }
+.movie-card:nth-child(2) { animation-delay: .06s; }
+.movie-card:nth-child(3) { animation-delay: .12s; }
+.movie-card:nth-child(4) { animation-delay: .18s; }
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s, transform .7s; }
+.reveal.visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-delay: 0s !important; transition-duration: .01ms !important; }
+  .reveal { opacity: 1; transform: none; }
+}
