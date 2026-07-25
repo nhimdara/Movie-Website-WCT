@@ -9,7 +9,7 @@ export default function MovieCard({ movie }) {
   const saved = watchlist.includes(movie.id);
   return <article className="movie-card">
     <div className="poster">
-      <a href={`/movie?id=${movie.id}`}><img src={moviePoster(movie)} alt={`${movie.title} poster`} loading="lazy" /></a>
+      <a href={`/movie?id=${movie.id}`}><img src={moviePoster(movie)} alt={`${movie.title} poster`} loading="lazy" decoding="async" /></a>
       <span className="card-genre">{movie.genre}</span>
       <div className="card-actions">
           <button className="round-action play-action" onClick={() => playTrailer(movie)} aria-label={`Play ${movie.title} trailer`}><PlayIcon /></button>

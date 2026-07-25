@@ -16,7 +16,7 @@ function StreamingCard({
   return <article className="stream-card">
     <div className="stream-card-frame">
       <a className="stream-card-art" href={`/movie?id=${movie.id}`} aria-label={`View ${movie.title}`}>
-        <img src={moviePoster(movie)} alt="" />
+        <img src={moviePoster(movie)} alt="" loading="lazy" decoding="async" />
       </a>
       <div className="stream-card-shade" />
       <div className="stream-card-copy">
@@ -72,6 +72,38 @@ function StreamingRow({ title, eyebrow, movies, progress = false, actions }) {
   </section>;
 }
 
+function EditorialSpotlight({ movie, onPlay, saved, onWatchlist }) {
+  if (!movie) return null;
+
+  return <section className="editorial-spotlight" aria-labelledby="editorial-title">
+    <div className="editorial-art">
+      <img src={moviePoster(movie)} alt="" loading="lazy" decoding="async" />
+      <div className="editorial-score">
+        <small>Audience score</small>
+        <b>{Math.round(movie.rating * 10)}<span>%</span></b>
+      </div>
+    </div>
+    <div className="editorial-copy">
+      <span className="eyebrow">The editor&apos;s cut</span>
+      <h2 id="editorial-title">One film.<br /><em>Worth your night.</em></h2>
+      <h3>{movie.title}</h3>
+      <p>{movie.description}</p>
+      <dl>
+        <div><dt>Genre</dt><dd>{movie.genre}</dd></div>
+        <div><dt>Released</dt><dd>{movie.year}</dd></div>
+        <div><dt>Runtime</dt><dd>{movie.duration}</dd></div>
+      </dl>
+      <div className="button-row">
+        <button className="btn btn-primary" onClick={() => onPlay(movie)}><PlayIcon /> Watch now</button>
+        <button className={`btn editorial-save${saved ? " is-added" : ""}`} onClick={() => onWatchlist(movie.id)}>
+          <PlusIcon checked={saved} /> {saved ? "In my list" : "Add to list"}
+        </button>
+        <a className="editorial-link" href={`/movie?id=${movie.id}`}>Read the story <span>↗</span></a>
+      </div>
+    </div>
+  </section>;
+}
+
 export default function Home() {
   const {
     movies,
@@ -87,10 +119,12 @@ export default function Home() {
   } = useMovies();
   const [email, setEmail] = useState("");
   const [subscribeError, setSubscribeError] = useState("");
+
   const published = movies.filter(movie => movie.status !== "Draft");
   const recentlyViewed = viewHistory.map(id => movies.find(movie => movie.id === id)).filter(Boolean);
   const topRated = [...published].sort((a, b) => b.rating - a.rating);
   const newReleases = [...published].sort((a, b) => b.year - a.year);
+  const genres = [...new Set(published.map(movie => movie.genre))].slice(0, 6);
   const subscribe = (event) => {
     event.preventDefault();
     const result = addSubscriber(email);
@@ -103,6 +137,8 @@ export default function Home() {
     onFavourite: toggleFavourite,
     onWatchlist: toggleWatchlist,
     onPlay: movie => movie.videoUrl ? playMovie(movie) : playTrailer(movie),
+    favourites,
+    watchlist,
   };
 
   return <main className="streaming-home">
@@ -110,45 +146,60 @@ export default function Home() {
     <div id="trending" className="stream-catalog">
       {siteSettings.showGenres && <nav className="stream-genre-nav" aria-label="Browse movie genres">
         <span>Explore</span>
-        {[...new Set(published.map(movie => movie.genre))].slice(0, 6).map(genre =>
+        {genres.map(genre =>
           <a key={genre} href={`/movies?genre=${encodeURIComponent(genre)}`}>{genre}</a>
         )}
       </nav>}
+
+      <aside className="stream-discovery-bar" aria-label="CineVault collection summary">
+        <div className="discovery-intro">
+          <i aria-hidden="true" />
+          <span><b>Curated for tonight</b><small>Hand-picked stories, no endless scrolling</small></span>
+        </div>
+        <dl>
+          <div><dt>Films</dt><dd>{published.length}</dd></div>
+          <div><dt>Genres</dt><dd>{genres.length}</dd></div>
+          <div><dt>Top score</dt><dd>{topRated[0]?.rating ?? "—"}</dd></div>
+        </dl>
+        <a href="/movies">Browse the vault <span aria-hidden="true">↗</span></a>
+      </aside>
 
       {siteSettings.showContinueWatching && recentlyViewed.length > 0 && <StreamingRow
         eyebrow="Because you watched"
         title="Continue Watching"
         movies={recentlyViewed}
         progress
-        actions={{
-          ...rowActions,
-          favourites,
-          watchlist,
-        }}
+        actions={rowActions}
       />}
 
       {siteSettings.showTopRow && <StreamingRow
         eyebrow="What everyone is watching"
         title={siteSettings.topRowTitle}
         movies={topRated.slice(0, 10)}
-        actions={{ ...rowActions, favourites, watchlist }}
+        actions={rowActions}
       />}
+      <EditorialSpotlight
+        movie={topRated[0]}
+        onPlay={rowActions.onPlay}
+        saved={topRated[0] ? watchlist.includes(topRated[0].id) : false}
+        onWatchlist={toggleWatchlist}
+      />
       {siteSettings.showTrending && <StreamingRow
         title={siteSettings.trendingTitle}
         movies={published}
-        actions={{ ...rowActions, favourites, watchlist }}
+        actions={rowActions}
       />}
       {siteSettings.showNewReleases && <StreamingRow
         eyebrow="Fresh from the vault"
         title={siteSettings.newReleasesTitle}
         movies={newReleases}
-        actions={{ ...rowActions, favourites, watchlist }}
+        actions={rowActions}
       />}
-      {siteSettings.showGenreRows && ["Sci-Fi", "Drama", "Thriller"].map(genre => <StreamingRow
+      {siteSettings.showGenreRows && ["Science Fiction", "Drama", "Thriller"].map(genre => <StreamingRow
         key={genre}
         title={`${genre} You Might Like`}
         movies={published.filter(movie => movie.genre === genre)}
-        actions={{ ...rowActions, favourites, watchlist }}
+        actions={rowActions}
       />)}
 
       {siteSettings.showNewsletter && <section className="stream-newsletter">

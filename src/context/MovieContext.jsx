@@ -1,8 +1,9 @@
-import { createContext, useCallback, useMemo, useState } from "react";
+import { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import seedMovies, { createMovieRecord, MOVIE_STORE } from "../data/movies";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 export const MovieContext = createContext(null);
+const seedMoviesById = new Map(seedMovies.map(movie => [Number(movie.id), movie]));
 
 const initialReviews = [
   { id: 1, movieId: 1, initials: "SK", author: "Sofia Kim", time: "12 min ago", movie: "Beyond the Horizon", rating: 5, copy: "A beautiful, patient piece of science fiction. The final act stayed with me.", status: "pending" },
@@ -12,7 +13,7 @@ const initialReviews = [
 
 export const defaultSiteSettings = {
   brandName: "CineVault",
-  logo: "/images/branding/movie-logo.png",
+  logo: "/images/branding/movie-logo.webp",
   heroLabel: "CineVault Original",
   heroNote: "Featured this week",
   featuredMovieId: "",
@@ -50,8 +51,9 @@ export function MovieProvider({ children }) {
   const [storedSiteSettings, setStoredSiteSettings] = useLocalStorage("cinevault-site-settings", defaultSiteSettings);
   const [trailer, setTrailer] = useState(null);
   const [toast, setToast] = useState("");
+  const toastTimerRef = useRef(null);
   const allMovies = useMemo(() => storedMovies.map((movie) => {
-    const seedMovie = seedMovies.find(seed => Number(seed.id) === Number(movie.id));
+    const seedMovie = seedMoviesById.get(Number(movie.id));
     return createMovieRecord({
       ...seedMovie,
       ...movie,
@@ -64,13 +66,17 @@ export function MovieProvider({ children }) {
     ...defaultSiteSettings,
     ...storedSiteSettings,
     // Keep the new project logo visible for browsers that saved the old empty default.
-    logo: storedSiteSettings.logo || defaultSiteSettings.logo,
+    logo: !storedSiteSettings.logo || storedSiteSettings.logo === "/images/branding/movie-logo.png"
+      ? defaultSiteSettings.logo
+      : storedSiteSettings.logo,
   }), [storedSiteSettings]);
+
+  useEffect(() => () => window.clearTimeout(toastTimerRef.current), []);
 
   const notify = useCallback((message) => {
     setToast(message);
-    window.clearTimeout(window.cinevaultToastTimer);
-    window.cinevaultToastTimer = window.setTimeout(() => setToast(""), 2300);
+    window.clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = window.setTimeout(() => setToast(""), 2300);
   }, []);
 
   const toggleList = useCallback((id, list, setList, label) => {
@@ -180,17 +186,23 @@ export function MovieProvider({ children }) {
     notify("Website settings restored.");
   }, [setStoredSiteSettings, notify]);
 
+  const playTrailer = useCallback((movie) => {
+    setTrailer({ ...movie, playerUrl: movie.trailerUrl, playerType: "Trailer" });
+  }, []);
+  const playMovie = useCallback((movie) => {
+    setTrailer({ ...movie, playerUrl: movie.videoUrl, playerType: "Movie" });
+  }, []);
+  const closeTrailer = useCallback(() => setTrailer(null), []);
+
   const value = useMemo(() => ({
     movies, allMovies, favourites, watchlist, trailer, toast, notify,
     addMovie, updateMovie, deleteMovie, deleteAllMovies, restoreSeedMovies, importMovies,
     reviews, addReview, moderateReview, subscribers, subscribe, messages, sendMessage, updateMessageStatus, deleteMessage, preferences, setPreferences, viewHistory, markViewed,
     siteSettings, updateSiteSettings, resetSiteSettings,
-    playTrailer: (movie) => setTrailer({ ...movie, playerUrl: movie.trailerUrl, playerType: "Trailer" }),
-    playMovie: (movie) => setTrailer({ ...movie, playerUrl: movie.videoUrl, playerType: "Movie" }),
-    closeTrailer: () => setTrailer(null),
+    playTrailer, playMovie, closeTrailer,
     toggleFavourite: (id) => toggleList(id, favourites, setFavourites, "favourites"),
     toggleWatchlist: (id) => toggleList(id, watchlist, setWatchlist, "watchlist"),
-  }), [movies, allMovies, favourites, watchlist, trailer, toast, notify, addMovie, updateMovie, deleteMovie, deleteAllMovies, restoreSeedMovies, importMovies, reviews, addReview, moderateReview, subscribers, subscribe, messages, sendMessage, updateMessageStatus, deleteMessage, preferences, setPreferences, viewHistory, markViewed, siteSettings, updateSiteSettings, resetSiteSettings, setFavourites, setWatchlist, toggleList]);
+  }), [movies, allMovies, favourites, watchlist, trailer, toast, notify, addMovie, updateMovie, deleteMovie, deleteAllMovies, restoreSeedMovies, importMovies, reviews, addReview, moderateReview, subscribers, subscribe, messages, sendMessage, updateMessageStatus, deleteMessage, preferences, setPreferences, viewHistory, markViewed, siteSettings, updateSiteSettings, resetSiteSettings, playTrailer, playMovie, closeTrailer, setFavourites, setWatchlist, toggleList]);
 
   return <MovieContext.Provider value={value}>{children}</MovieContext.Provider>;
 }

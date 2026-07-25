@@ -16,6 +16,11 @@
   .movie-reviews { grid-template-columns: 1fr; gap: 40px; }
   .footer-grid { grid-template-columns: repeat(2, 1fr); }
   .stream-newsletter { grid-template-columns: 1fr; gap: 28px; }
+  .stream-discovery-bar { grid-template-columns: 1fr auto; }
+  .stream-discovery-bar dl { display: none; }
+  .editorial-spotlight { grid-template-columns: 1fr; }
+  .editorial-art { min-height: 430px; }
+  .editorial-art::after { background: linear-gradient(0deg, #0d1016, transparent 55%); }
 }
 @media (max-width: 680px) {
   :root { --header: 68px; }
@@ -59,6 +64,10 @@
   .footer-bottom { flex-direction: column; gap: 10px; }
   .stream-catalog { margin-top: -38px; padding: 0 16px 70px; background: linear-gradient(180deg, transparent, var(--bg) 48px); }
   .stream-genre-nav { margin-bottom: 22px; }
+  .stream-discovery-bar { margin-bottom: 34px; padding: 14px; gap: 12px; }
+  .discovery-intro small { display: none; }
+  .stream-discovery-bar > a { padding-inline: 8px; font-size: 0; }
+  .stream-discovery-bar > a span { margin-left: 0; font-size: 1rem; }
   .stream-row { margin-bottom: 38px; }
   .stream-row-heading { min-height: 38px; }
   .stream-row-heading > a { display: none; }
@@ -69,6 +78,15 @@
   .stream-card-actions button, .stream-card-actions a { width: 29px; height: 29px; }
   .stream-card-copy { bottom: 48px; }
   .stream-newsletter { margin-top: 56px; padding: 31px 22px 38px; }
+  .editorial-spotlight { margin: 58px 0 64px; min-height: 0; border-radius: 15px; }
+  .editorial-art { min-height: 320px; }
+  .editorial-score { left: 18px; bottom: 18px; width: 88px; height: 88px; }
+  .editorial-score b { font-size: 1.25rem; }
+  .editorial-copy { padding: 34px 22px 40px; }
+  .editorial-copy h2 { font-size: clamp(2.7rem, 14vw, 4rem); }
+  .editorial-copy dl { gap: 18px; flex-wrap: wrap; }
+  .editorial-copy .button-row .btn { flex: 1; padding-inline: 14px; }
+  .editorial-link { width: 100%; }
   .stream-newsletter form { flex-direction: column; gap: 9px; }
   .stream-newsletter input, .stream-newsletter .btn { width: 100%; min-height: 48px; border-radius: 8px; }
 }

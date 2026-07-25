@@ -1,5 +1,5 @@
 .login-page { min-height: 100svh; display: grid; grid-template-columns: minmax(420px, 1.08fr) minmax(460px, .92fr); background: #0b0d12; color: #f6f3ed; }
-.login-visual { position: relative; min-height: 100svh; padding: 38px 42px; display: flex; flex-direction: column; justify-content: space-between; background: #090b10 url("/images/banners/hero-banner.jpg") 62% center/cover; overflow: hidden; }
+.login-visual { position: relative; min-height: 100svh; padding: 38px 42px; display: flex; flex-direction: column; justify-content: space-between; background: #090b10 url("/images/banners/hero-banner.webp") 62% center/cover; overflow: hidden; }
 .login-visual-overlay { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8,10,15,.15), rgba(8,10,15,.26)), linear-gradient(0deg, rgba(7,9,14,.95), transparent 68%), linear-gradient(180deg, rgba(7,9,14,.72), transparent 30%); }
 .login-visual-brand, .login-feature { position: relative; z-index: 1; }
 .login-visual-brand { display: flex; align-items: center; gap: 11px; font: 700 .96rem "Manrope"; letter-spacing: -.04em; }
@@ -55,9 +55,11 @@
 .login-mobile-brand { display: none; }
 .auth-redirect { min-height: 100vh; display: grid; place-content: center; gap: 12px; background: #0a0c11; color: #747985; text-align: center; font-size: .68rem; }
 @media (max-width: 900px) {
-  .login-page { grid-template-columns: 1fr; }
+  .login-page { width: 100%; min-width: 0; grid-template-columns: minmax(0, 1fr); overflow-x: hidden; }
   .login-visual { display: none; }
-  .login-panel { min-height: 100svh; padding: 26px 24px 20px; }
+  .login-panel { width: 100%; min-width: 0; min-height: 100svh; padding: 26px 24px 20px; overflow-x: hidden; }
+  .login-box, .login-form, .login-field, .login-input-wrap { min-width: 0; }
+  .login-input-wrap, .login-submit, .demo-login { width: 100%; }
   .login-mobile-brand { display: flex; align-items: center; gap: 10px; font: 700 .9rem "Manrope"; }
   .login-back { position: absolute; top: 38px; right: 24px; }
 }

@@ -81,7 +81,7 @@ export default function MovieBanner() {
           onClick={() => setCurrent(index)}
           aria-label={`Show ${slide.title}`}
           aria-current={index === current ? "true" : undefined}
-        ><i/></button>)}
+        ><i><span /></i></button>)}
       </div>
       <span>{String(slides.length).padStart(2, "0")}</span>
       <button className="hero-arrow" onClick={goNext} aria-label="Next movie">→</button>

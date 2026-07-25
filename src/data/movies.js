@@ -28,6 +28,7 @@ export function createMovieRecord(movie = {}) {
     id: Number(movie.id) || 0,
     year: Number(movie.year) || MOVIE_DEFAULTS.year,
     rating: Number(movie.rating) || 0,
+    genre: movie.genre === "Sci-Fi" ? "Science Fiction" : movie.genre || MOVIE_DEFAULTS.genre,
   };
 }
 
@@ -37,7 +38,7 @@ const movieRecords = [
     title: "Beyond the Horizon",
     year: 2026,
     duration: "2h 18m",
-    genre: "Sci-Fi",
+    genre: "Science Fiction",
     rating: 9.2,
     image: "movie-1.jpg",
     description:
@@ -89,7 +90,7 @@ const movieRecords = [
     title: "The Last Signal",
     year: 2026,
     duration: "2h 12m",
-    genre: "Sci-Fi",
+    genre: "Science Fiction",
     rating: 9.1,
     image: "movie-5.jpg",
     description:
@@ -167,7 +168,7 @@ const movieRecords = [
     title: "Ember Protocol",
     year: 2025,
     duration: "2h 15m",
-    genre: "Sci-Fi",
+    genre: "Science Fiction",
     rating: 8.6,
     image: "movie-11.jpg",
     description:
@@ -208,7 +209,7 @@ const movies = movieRecords.map((movie, index) => createMovieRecord({
 }));
 
 export const genres = [
-  "Sci-Fi",
+  "Science Fiction",
   "Drama",
   "Thriller",
   "Adventure",
@@ -218,6 +219,6 @@ export const moviePoster = (movie) => {
   const source = movie?.poster || movie?.image || "movie-1.jpg";
   return /^(https?:|data:|blob:|\/)/i.test(source)
     ? source
-    : `/images/movies/${source}`;
+    : `/images/movies/${source.replace(/\.jpe?g$/i, ".webp")}`;
 };
 export default movies;

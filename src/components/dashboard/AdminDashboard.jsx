@@ -249,7 +249,7 @@ function WebsiteEditor({ movies, settings, onSave, onReset, saved }) {
     ["Top titles", "Show the highest-rated movie row.", "showTopRow"],
     ["Trending", "Show the main catalogue row.", "showTrending"],
     ["New releases", "Show titles ordered by release year.", "showNewReleases"],
-    ["Genre collections", "Show Sci-Fi, Drama and Thriller rows.", "showGenreRows"],
+    ["Genre collections", "Show Science Fiction, Drama and Thriller rows.", "showGenreRows"],
     ["Newsletter", "Show the email subscription section.", "showNewsletter"],
   ];
 
@@ -643,7 +643,7 @@ function MovieEditor({ movie, onSave, onClose }) {
       <header><div><span>{movie ? "Edit catalogue title" : "New catalogue title"}</span><h2>{movie ? movie.title : "Add a movie"}</h2></div><button type="button" onClick={onClose}>×</button></header>
       <div className="movie-editor-body">
         <aside>
-          <img src={posterPreview} alt="Poster preview" onError={event => { event.currentTarget.src = "/images/movies/movie-1.jpg"; }}/>
+          <img src={posterPreview} alt="Poster preview" onError={event => { event.currentTarget.src = "/images/movies/movie-1.webp"; }}/>
           <label className="poster-upload">Upload poster<input type="file" accept="image/png,image/jpeg,image/webp" onChange={handlePosterFile}/></label>
           <small>JPG, PNG or WebP · max 1.5 MB</small>
         </aside>

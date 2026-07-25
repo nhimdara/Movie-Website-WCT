@@ -12,7 +12,7 @@ export default function Login() {
         <span className="login-feature-tag">Featured this week</span>
         <h1>Every great story<br/>starts with a frame.</h1>
         <p>Manage your catalogue, understand your audience, and curate unforgettable cinema.</p>
-        <div className="login-feature-meta"><span>01</span><i/><b>Beyond the Horizon</b><small>2026 · Sci-Fi</small></div>
+        <div className="login-feature-meta"><span>01</span><i/><b>Beyond the Horizon</b><small>2026 · Science Fiction</small></div>
       </div>
     </section>
     <section className="login-panel">
