@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import useMovies from "../../hooks/useMovies";
-import { moviePoster } from "../../data/movie";
+import { moviePoster, usePosterFallback } from "../../data/movie";
 import { PlayIcon, PlusIcon } from "../common/Icons";
 import useLanguage from "../../hooks/useLanguage";
 
@@ -64,6 +64,7 @@ export default function MovieBanner() {
           className={`hero-poster hero-poster-${index + 1}`}
           src={moviePoster(posterMovie)}
           alt=""
+          onError={usePosterFallback}
         />
       ))}
     </div>
@@ -83,7 +84,7 @@ export default function MovieBanner() {
     </div>
 
     {slides.length > 1 && <button className="hero-next-card" onClick={goNext} aria-label={`Next movie: ${nextMovie.title}`}>
-      <img src={moviePoster(nextMovie)} alt=""/>
+      <img src={moviePoster(nextMovie)} alt="" onError={usePosterFallback}/>
       <span><small>{t("upNext", "Up next")}</small><b>{nextMovie.title}</b><i>{nextMovie.genre} · {nextMovie.year}</i></span>
       <strong>→</strong>
     </button>}

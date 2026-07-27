@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { HeartIcon, PlayIcon, PlusIcon } from "../components/common/Icons";
 import MovieBanner from "../components/movie/MovieBanner";
-import { moviePoster } from "../data/movie";
+import { moviePoster, usePosterFallback } from "../data/movie";
 import useMovies from "../hooks/useMovies";
 import useLanguage from "../hooks/useLanguage";
 
@@ -27,7 +27,7 @@ function StreamingCard({
   return <article className="stream-card">
     <div className="stream-card-frame">
       <a className="stream-card-art" href={`/movie?id=${movie.id}`} aria-label={`View ${movie.title}`}>
-        <img src={moviePoster(movie)} alt="" loading="lazy" decoding="async" />
+        <img src={moviePoster(movie)} alt="" loading="lazy" decoding="async" onError={usePosterFallback} />
       </a>
       <div className="stream-card-shade" />
       <div className="stream-card-copy">
@@ -90,7 +90,7 @@ function EditorialSpotlight({ movie, onPlay, saved, onWatchlist }) {
 
   return <section className="editorial-spotlight" aria-labelledby="editorial-title">
     <div className="editorial-art">
-      <img src={moviePoster(movie)} alt="" loading="lazy" decoding="async" />
+      <img src={moviePoster(movie)} alt="" loading="lazy" decoding="async" onError={usePosterFallback} />
       <div className="editorial-score">
         <small>{t("audienceScore", "Audience score")}</small>
         <b>{Math.round(movie.rating * 10)}<span>%</span></b>

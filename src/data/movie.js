@@ -381,4 +381,10 @@ export const moviePoster = (movie) => {
     ? source
     : `/images/movies/${source.replace(/\.jpe?g$/i, ".webp")}`;
 };
+export const usePosterFallback = (event) => {
+  const image = event.currentTarget;
+  if (image.dataset.posterFallback) return;
+  image.dataset.posterFallback = "true";
+  image.src = "/images/movies/movie-1.webp";
+};
 export default movies;
