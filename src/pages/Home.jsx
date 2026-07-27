@@ -3,6 +3,16 @@ import { HeartIcon, PlayIcon, PlusIcon } from "../components/common/Icons";
 import MovieBanner from "../components/movie/MovieBanner";
 import { moviePoster } from "../data/movie";
 import useMovies from "../hooks/useMovies";
+import useLanguage from "../hooks/useLanguage";
+
+const translateGenre = (t, genre) => ({
+  "Science Fiction": t("scienceFiction", genre),
+  Drama: t("drama", genre),
+  Thriller: t("thriller", genre),
+  Action: t("action", genre),
+  Animation: t("animation", genre),
+  Crime: t("crime", genre),
+}[genre] || genre);
 
 function StreamingCard({
   movie,
@@ -13,6 +23,7 @@ function StreamingCard({
   onPlay,
   onWatchlist,
 }) {
+  const { t } = useLanguage();
   return <article className="stream-card">
     <div className="stream-card-frame">
       <a className="stream-card-art" href={`/movie?id=${movie.id}`} aria-label={`View ${movie.title}`}>
@@ -24,7 +35,7 @@ function StreamingCard({
         <div className="stream-card-meta">
           <b>{Math.round(movie.rating * 10)}% Match</b>
           <span>{movie.year}</span>
-          <span>{movie.genre}</span>
+          <span>{translateGenre(t, movie.genre)}</span>
         </div>
       </div>
       <div className="stream-card-actions">
@@ -39,6 +50,7 @@ function StreamingCard({
 }
 
 function StreamingRow({ title, eyebrow, movies, progress = false, actions }) {
+  const { t } = useLanguage();
   const trackRef = useRef(null);
   if (!movies.length) return null;
 
@@ -51,7 +63,7 @@ function StreamingRow({ title, eyebrow, movies, progress = false, actions }) {
   return <section className="stream-row">
     <header className="stream-row-heading">
       <div>{eyebrow && <span>{eyebrow}</span>}<h2>{title}</h2></div>
-      <a href="/movies">Explore all <b>›</b></a>
+      <a href="/movies">{t("exploreAll", "Explore all")} <b>›</b></a>
     </header>
     <div className="stream-track-shell">
       <button className="stream-row-arrow stream-row-prev" onClick={() => scroll(-1)} aria-label={`Scroll ${title} left`}>‹</button>
@@ -73,38 +85,40 @@ function StreamingRow({ title, eyebrow, movies, progress = false, actions }) {
 }
 
 function EditorialSpotlight({ movie, onPlay, saved, onWatchlist }) {
+  const { t } = useLanguage();
   if (!movie) return null;
 
   return <section className="editorial-spotlight" aria-labelledby="editorial-title">
     <div className="editorial-art">
       <img src={moviePoster(movie)} alt="" loading="lazy" decoding="async" />
       <div className="editorial-score">
-        <small>Audience score</small>
+        <small>{t("audienceScore", "Audience score")}</small>
         <b>{Math.round(movie.rating * 10)}<span>%</span></b>
       </div>
     </div>
     <div className="editorial-copy">
-      <span className="eyebrow">The editor&apos;s cut</span>
-      <h2 id="editorial-title">One film.<br /><em>Worth your night.</em></h2>
+      <span className="eyebrow">{t("editorsCut", "The editor's cut")}</span>
+      <h2 id="editorial-title">{t("worthNight", "One film. Worth your night.")}</h2>
       <h3>{movie.title}</h3>
       <p>{movie.description}</p>
       <dl>
-        <div><dt>Genre</dt><dd>{movie.genre}</dd></div>
-        <div><dt>Released</dt><dd>{movie.year}</dd></div>
-        <div><dt>Runtime</dt><dd>{movie.duration}</dd></div>
+        <div><dt>{t("genre", "Genre")}</dt><dd>{movie.genre}</dd></div>
+        <div><dt>{t("released", "Released")}</dt><dd>{movie.year}</dd></div>
+        <div><dt>{t("runtime", "Runtime")}</dt><dd>{movie.duration}</dd></div>
       </dl>
       <div className="button-row">
-        <button className="btn btn-primary" onClick={() => onPlay(movie)}><PlayIcon /> Watch now</button>
+        <button className="btn btn-primary" onClick={() => onPlay(movie)}><PlayIcon /> {t("watchNow", "Watch now")}</button>
         <button className={`btn editorial-save${saved ? " is-added" : ""}`} onClick={() => onWatchlist(movie.id)}>
-          <PlusIcon checked={saved} /> {saved ? "In my list" : "Add to list"}
+          <PlusIcon checked={saved} /> {saved ? t("inMyList", "In my list") : t("addToList", "Add to list")}
         </button>
-        <a className="editorial-link" href={`/movie?id=${movie.id}`}>Read the story <span>↗</span></a>
+        <a className="editorial-link" href={`/movie?id=${movie.id}`}>{t("readStory", "Read the story")} <span>↗</span></a>
       </div>
     </div>
   </section>;
 }
 
 export default function Home() {
+  const { t } = useLanguage();
   const {
     movies,
     favourites,
@@ -145,36 +159,36 @@ export default function Home() {
     <MovieBanner />
     <div id="trending" className="stream-catalog">
       {siteSettings.showGenres && <nav className="stream-genre-nav" aria-label="Browse movie genres">
-        <span>Explore</span>
+        <span>{t("explore", "Explore")}</span>
         {genres.map(genre =>
-          <a key={genre} href={`/movies?genre=${encodeURIComponent(genre)}`}>{genre}</a>
+          <a key={genre} href={`/movies?genre=${encodeURIComponent(genre)}`}>{translateGenre(t, genre)}</a>
         )}
       </nav>}
 
       <aside className="stream-discovery-bar" aria-label="CineVault collection summary">
         <div className="discovery-intro">
           <i aria-hidden="true" />
-          <span><b>Curated for tonight</b><small>Hand-picked stories, no endless scrolling</small></span>
+          <span><b>{t("curatedTonight", "Curated for tonight")}</b><small>{t("curatedCopy", "Hand-picked stories, no endless scrolling")}</small></span>
         </div>
         <dl>
-          <div><dt>Films</dt><dd>{published.length}</dd></div>
-          <div><dt>Genres</dt><dd>{genres.length}</dd></div>
-          <div><dt>Top score</dt><dd>{topRated[0]?.rating ?? "—"}</dd></div>
+          <div><dt>{t("films", "Films")}</dt><dd>{published.length}</dd></div>
+          <div><dt>{t("genres", "Genres")}</dt><dd>{genres.length}</dd></div>
+          <div><dt>{t("topScore", "Top score")}</dt><dd>{topRated[0]?.rating ?? "—"}</dd></div>
         </dl>
-        <a href="/movies">Browse the vault <span aria-hidden="true">↗</span></a>
+        <a href="/movies">{t("browseVault", "Browse the vault")} <span aria-hidden="true">↗</span></a>
       </aside>
 
       {siteSettings.showContinueWatching && recentlyViewed.length > 0 && <StreamingRow
-        eyebrow="Because you watched"
-        title="Continue Watching"
+        eyebrow={t("becauseWatched", "Because you watched")}
+        title={t("continueWatching", "Continue Watching")}
         movies={recentlyViewed}
         progress
         actions={rowActions}
       />}
 
       {siteSettings.showTopRow && <StreamingRow
-        eyebrow="What everyone is watching"
-        title={siteSettings.topRowTitle}
+        eyebrow={t("everyoneWatching", "What everyone is watching")}
+        title={t("topTen", siteSettings.topRowTitle)}
         movies={topRated.slice(0, 10)}
         actions={rowActions}
       />}
@@ -185,33 +199,33 @@ export default function Home() {
         onWatchlist={toggleWatchlist}
       />
       {siteSettings.showTrending && <StreamingRow
-        title={siteSettings.trendingTitle}
+        title={t("trendingNow", siteSettings.trendingTitle)}
         movies={published}
         actions={rowActions}
       />}
       {siteSettings.showNewReleases && <StreamingRow
-        eyebrow="Fresh from the vault"
-        title={siteSettings.newReleasesTitle}
+        eyebrow={t("freshVault", "Fresh from the vault")}
+        title={t("newReleases", siteSettings.newReleasesTitle)}
         movies={newReleases}
         actions={rowActions}
       />}
       {siteSettings.showGenreRows && ["Science Fiction", "Drama", "Thriller"].map(genre => <StreamingRow
         key={genre}
-        title={`${genre} You Might Like`}
+        title={`${translateGenre(t, genre)} ${t("youMightLike", "You Might Like")}`}
         movies={published.filter(movie => movie.genre === genre)}
         actions={rowActions}
       />)}
 
       {siteSettings.showNewsletter && <section className="stream-newsletter">
         <div>
-          <span className="eyebrow">New every week</span>
-          <h2>{siteSettings.newsletterTitle}</h2>
-          <p>{siteSettings.newsletterCopy}</p>
+          <span className="eyebrow">{t("newEveryWeek", "New every week")}</span>
+          <h2>{t("newsletterTitle", siteSettings.newsletterTitle)}</h2>
+          <p>{t("newsletterCopy", siteSettings.newsletterCopy)}</p>
         </div>
         <form onSubmit={subscribe}>
-          <label className="sr-only" htmlFor="newsletter-email">Email address</label>
-          <input id="newsletter-email" value={email} onChange={event => setEmail(event.target.value)} type="email" placeholder="Email address" required />
-          <button className="btn btn-primary">Get updates</button>
+          <label className="sr-only" htmlFor="newsletter-email">{t("email", "Email address")}</label>
+          <input id="newsletter-email" value={email} onChange={event => setEmail(event.target.value)} type="email" placeholder={t("email", "Email address")} required />
+          <button className="btn btn-primary">{t("getUpdates", "Get updates")}</button>
           {subscribeError && <small role="alert">{subscribeError}</small>}
         </form>
       </section>}

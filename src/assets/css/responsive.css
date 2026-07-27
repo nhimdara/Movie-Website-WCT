@@ -21,6 +21,9 @@
   .editorial-spotlight { grid-template-columns: 1fr; }
   .editorial-art { min-height: 430px; }
   .editorial-art::after { background: linear-gradient(0deg, #0d1016, transparent 55%); }
+  .about-manifesto { grid-template-columns: 1fr; gap: 28px; }
+  .about-value-grid { grid-template-columns: 1fr; }
+  .about-value-grid article { min-height: 240px; }
 }
 @media (max-width: 680px) {
   :root { --header: 68px; }
@@ -62,6 +65,15 @@
   .details-content h1 { font-size: 4rem; }
   .facts { grid-template-columns: 1fr; }
   .about-stat-grid { grid-template-columns: 1fr; }
+  .about-page { padding-top: calc(var(--header) + 16px); }
+  .about-hero { min-height: 650px; border-radius: 18px; }
+  .about-hero-overlay { background: linear-gradient(0deg, rgba(5,7,11,.97) 0%, rgba(5,7,11,.36) 72%); }
+  .about-hero-copy { width: 100%; padding: 32px 24px 52px; }
+  .about-hero-copy h1 { font-size: clamp(3rem, 14vw, 5rem); }
+  .about-hero-index { display: none; }
+  .about-manifesto { padding: 72px 4px; }
+  .about-values { padding: 80px 0; }
+  .about-cta { padding: 48px 22px; border-radius: 18px; }
   .footer-grid { grid-template-columns: 1fr; }
   .footer-bottom { flex-direction: column; gap: 10px; }
   .stream-catalog { margin-top: -38px; padding: 0 16px 70px; background: linear-gradient(180deg, transparent, var(--bg) 48px); }

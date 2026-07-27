@@ -1,9 +1,11 @@
 import { useState } from "react";
 import useMovies from "../../hooks/useMovies";
+import useLanguage from "../../hooks/useLanguage";
 import { validateContact } from "../../utils/validation";
 
 export default function ContactForm() {
   const { sendMessage } = useMovies();
+  const { t } = useLanguage();
   const [error, setError] = useState("");
   const submit = (event) => {
     event.preventDefault();
@@ -15,11 +17,11 @@ export default function ContactForm() {
     event.currentTarget.reset();
   };
   return <form className="form-grid" onSubmit={submit}>
-    <Field label="Name" name="name" minLength="2" />
+    <Field label={t("name", "Name")} name="name" minLength="2" />
     <Field label="Email" name="email" type="email" />
-    <div className="form-group"><label htmlFor="message">Message</label><textarea id="message" name="message" required minLength="10" /></div>
+    <div className="form-group"><label htmlFor="message">{t("message", "Message")}</label><textarea id="message" name="message" required minLength="10" /></div>
     {error && <p className="field-error" role="alert">{error}</p>}
-    <button className="btn btn-primary">Send message →</button>
+    <button className="btn btn-primary">{t("sendMessage", "Send message")} →</button>
   </form>;
 }
 

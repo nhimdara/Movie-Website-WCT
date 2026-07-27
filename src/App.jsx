@@ -6,6 +6,7 @@ import Navbar from "./components/common/Navbar";
 import MovieTrailer from "./components/movie/MovieTrailer";
 import { AuthContext, AuthProvider } from "./context/AuthContext";
 import { MovieProvider } from "./context/MovieContext";
+import { LanguageProvider } from "./context/LanguageContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import useMovies from "./hooks/useMovies";
 import AppRoutes, { currentRoute } from "./routes/AppRoutes";
@@ -32,10 +33,12 @@ function AppContent() {
 
 export default function App() {
   return <ThemeProvider>
-    <AuthProvider>
-      <MovieProvider>
-        <AppContent />
-      </MovieProvider>
-    </AuthProvider>
+    <LanguageProvider>
+      <AuthProvider>
+        <MovieProvider>
+          <AppContent />
+        </MovieProvider>
+      </AuthProvider>
+    </LanguageProvider>
   </ThemeProvider>;
 }

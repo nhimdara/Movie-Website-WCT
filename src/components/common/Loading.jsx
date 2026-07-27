@@ -1,3 +1,6 @@
+import useLanguage from "../../hooks/useLanguage";
+
 export default function Loading() {
-  return <div className="empty-state" role="status"><b>Loading CineVault…</b><p>Preparing the collection.</p></div>;
+  const { t } = useLanguage();
+  return <div className="empty-state" role="status"><b>{t("loading", "Loading CineVault…")}</b><p>{t("preparing", "Preparing the collection.")}</p></div>;
 }

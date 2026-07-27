@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { moviePoster } from "../../data/movie";
 import useMovies from "../../hooks/useMovies";
+import useLanguage from "../../hooks/useLanguage";
 
 export default function SearchBar({ open, onClose }) {
   const { movies } = useMovies();
+  const { t } = useLanguage();
   const [query, setQuery] = useState("");
   const results = useMemo(() => {
     const term = query.trim().toLowerCase();
@@ -20,9 +22,9 @@ export default function SearchBar({ open, onClose }) {
 
   return <div className={`search-panel${open ? " open" : ""}`} aria-hidden={!open}>
     <form className="container global-search-form" action="/movies">
-      <label className="sr-only" htmlFor="global-search">Search movies</label>
-      <input id="global-search" name="search" type="search" placeholder="Search by title, genre or year…" value={query} onChange={event => setQuery(event.target.value)} autoFocus={open} autoComplete="off"/>
-      <button className="btn btn-primary">See all results <span>→</span></button>
+      <label className="sr-only" htmlFor="global-search">{t("searchMovies", "Search movies")}</label>
+      <input id="global-search" name="search" type="search" placeholder={`${t("searchMovies", "Search by title, genre or year")}…`} value={query} onChange={event => setQuery(event.target.value)} autoFocus={open} autoComplete="off"/>
+      <button className="btn btn-primary">{t("seeAllResults", "See all results")} <span>→</span></button>
     </form>
     <div className="container search-suggestions">
       <div className="search-suggestion-label"><span>{query ? "Matching titles" : "Popular now"}</span><small>{results.length} results</small></div>
