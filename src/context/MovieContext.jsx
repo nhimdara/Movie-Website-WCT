@@ -11,6 +11,20 @@ import useLocalStorage from "../hooks/useLocalStorage";
 
 export const MovieContext = createContext(null);
 const seedMoviesById = new Map(seedMovies.map(movie => [Number(movie.id), movie]));
+const legacySeedTitles = new Set([
+  "Beyond the Horizon",
+  "Neon Abyss",
+  "Dayfall",
+  "The Fractured Look",
+  "The Last Signal",
+  "Silent Rise",
+  "Obsidian Luxury",
+  "Shift at Midnight",
+  "Shattered Sky",
+  "The Climb",
+  "Ember Protocol",
+  "Dark Passage",
+]);
 
 export const defaultSiteSettings = DEFAULT_SITE_SETTINGS;
 
@@ -29,9 +43,17 @@ export function MovieProvider({ children }) {
   const toastTimerRef = useRef(null);
   const allMovies = useMemo(() => storedMovies.map((movie) => {
     const seedMovie = seedMoviesById.get(Number(movie.id));
+    const migratedMovie = seedMovie && legacySeedTitles.has(movie.title)
+      ? {
+          ...movie,
+          ...seedMovie,
+          poster: movie.poster || seedMovie.poster,
+          status: movie.status || seedMovie.status,
+        }
+      : { ...seedMovie, ...movie };
     return createMovieRecord({
-      ...seedMovie,
-      ...movie,
+      ...migratedMovie,
+      image: seedMovie?.image || movie.image || "",
       trailerUrl: movie.trailerUrl || seedMovie?.trailerUrl || "",
       videoUrl: movie.videoUrl || seedMovie?.videoUrl || "",
     });

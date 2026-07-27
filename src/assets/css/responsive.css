@@ -72,7 +72,7 @@
   .stream-row-heading { min-height: 38px; }
   .stream-row-heading > a { display: none; }
   .stream-track { margin-right: -16px; padding-right: 16px; }
-  .stream-card { flex-basis: min(72vw, 290px); }
+  .stream-card { flex-basis: min(48vw, 220px); }
   .stream-row-arrow { display: none; }
   .stream-card-actions { opacity: 1; transform: none; }
   .stream-card-actions button, .stream-card-actions a { width: 29px; height: 29px; }
