@@ -29,6 +29,8 @@
   .brand { margin-right: auto; }
   .hero { min-height: 680px; max-height: none; align-items: flex-end; padding-bottom: 78px; }
   .hero-slide-background { background-position: 64% center; }
+  .hero-poster-stack { right: -54px; width: 58vw; opacity: .74; }
+  .hero-poster { width: clamp(150px, 21vw, 205px); }
   .hero::after { background: linear-gradient(0deg, rgba(8,10,15,.98) 0%, rgba(8,10,15,.18) 72%); }
   .hero-content { width: calc(100% - 32px); margin-left: 16px; padding-top: 95px; }
   .hero h1 { margin: 14px 0; font-size: clamp(3.45rem, 17vw, 5.5rem); }
@@ -98,6 +100,8 @@
 
 @media (max-height: 730px) and (min-width: 681px) {
   .hero-content { padding-top: 82px; }
+  .hero-poster-stack { right: -76px; width: 72vw; opacity: .52; }
+  .hero-poster-2, .hero-poster-3 { display: none; }
   .hero h1 { margin: 12px 0; font-size: clamp(4rem, 7vw, 5.7rem); }
   .hero p { margin-bottom: 0; line-height: 1.55; }
   .hero-meta { margin-top: 16px; }

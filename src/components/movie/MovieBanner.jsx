@@ -24,6 +24,9 @@ export default function MovieBanner() {
 
   const movie = slides[current] || slides[0];
   const nextMovie = slides[(current + 1) % slides.length];
+  const bannerPosters = Array.from({ length: Math.min(3, slides.length) }, (_, offset) =>
+    slides[(current + offset) % slides.length]
+  );
   const saved = watchlist.includes(movie.id);
   const words = movie.title.trim().split(/\s+/);
   const accentWord = words.pop();
@@ -50,6 +53,16 @@ export default function MovieBanner() {
       className="hero-slide-background"
       style={{ backgroundImage: `linear-gradient(90deg, rgba(8,10,15,.98) 0%, rgba(8,10,15,.72) 38%, rgba(8,10,15,.06) 72%), linear-gradient(0deg, var(--bg) 0%, transparent 38%), url("${moviePoster(movie)}")` }}
     />
+    <div key={`posters-${movie.id}`} className="hero-poster-stack" aria-hidden="true">
+      {bannerPosters.map((posterMovie, index) => (
+        <img
+          key={posterMovie.id}
+          className={`hero-poster hero-poster-${index + 1}`}
+          src={moviePoster(posterMovie)}
+          alt=""
+        />
+      ))}
+    </div>
     <div className="hero-film-texture"/>
     <div className="hero-ambient-glow"/>
     <div key={`content-${movie.id}`} className="hero-content hero-slide-content" aria-live="polite">

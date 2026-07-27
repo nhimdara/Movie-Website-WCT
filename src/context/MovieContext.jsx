@@ -54,8 +54,10 @@ export function MovieProvider({ children }) {
     return createMovieRecord({
       ...migratedMovie,
       image: seedMovie?.image || movie.image || "",
-      trailerUrl: movie.trailerUrl || seedMovie?.trailerUrl || "",
-      videoUrl: movie.videoUrl || seedMovie?.videoUrl || "",
+      // Built-in catalogue links come from the current source data so an old
+      // localStorage snapshot cannot keep serving outdated trailer URLs.
+      trailerUrl: seedMovie?.trailerUrl || movie.trailerUrl || "",
+      videoUrl: seedMovie?.videoUrl || movie.videoUrl || "",
     });
   }), [storedMovies]);
   const movies = useMemo(() => allMovies.filter(movie => movie.status === "published"), [allMovies]);
