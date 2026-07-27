@@ -209,3 +209,100 @@
   [data-theme="light"] .facts,
   [data-theme="light"] .public-review-list article { box-shadow: 0 12px 30px rgba(36,30,22,.08); }
 }
+
+/* Tablet hero and content balance */
+@media (min-width: 681px) and (max-width: 1100px) {
+  .hero-content {
+    width: min(510px, 52vw);
+    margin-left: 32px;
+    padding-top: calc(var(--header) + 28px);
+  }
+  .hero h1,
+  .hero h1.hero-title-long { font-size: clamp(3.15rem, 6.8vw, 5rem); }
+  .hero p { max-width: 470px; font-size: .92rem; }
+  .hero-poster-stack { right: -48px; width: 52vw; }
+  .hero-poster { width: clamp(155px, 19vw, 215px); }
+  .hero-poster-2 { right: 44%; }
+  .hero-next-card { right: 24px; }
+  .hero-index { right: 24px; }
+  .stream-catalog { padding-inline: 24px; }
+  .stream-row-prev { left: -24px; }
+  .stream-row-next { right: -24px; }
+  .about-hero-copy { width: min(680px, 78%); }
+}
+
+/* Phone layout: reserve a visual area above readable content */
+@media (max-width: 680px) {
+  .site-header { padding-inline: env(safe-area-inset-left) env(safe-area-inset-right); }
+  .nav-actions { gap: 3px; }
+  .language-btn { min-width: 44px; height: 32px; padding-inline: 7px; font-size: .59rem; }
+  .hero {
+    min-height: 780px;
+    height: auto;
+    padding: 300px 0 78px;
+    align-items: flex-end;
+  }
+  .hero-poster-stack {
+    top: 58px;
+    right: -8%;
+    width: 92%;
+    height: 300px;
+    opacity: .88;
+  }
+  .hero-poster { width: clamp(145px, 42vw, 190px); }
+  .hero-poster-1 { right: 28%; }
+  .hero-poster-2 { right: 57%; display: block; opacity: .55; }
+  .hero-poster-3 { right: -2%; display: block; opacity: .48; }
+  .hero-content {
+    width: calc(100% - 32px);
+    margin-inline: 16px;
+    padding-top: 0;
+  }
+  .hero h1,
+  .hero h1.hero-title-long { font-size: clamp(2.7rem, 13vw, 4rem); line-height: .95; }
+  .hero p { max-width: 100%; display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+  .hero .button-row { display: grid; grid-template-columns: 1fr 1fr; }
+  .hero .button-row .btn { width: 100%; min-width: 0; padding-inline: 12px; }
+  .hero-details-link { grid-column: 1 / -1; justify-content: center; }
+  .stream-row-heading h2 { max-width: 85%; line-height: 1.3; }
+  .stream-card { flex-basis: min(46vw, 205px); }
+  .stream-card-frame { border-radius: 11px; }
+  .stream-discovery-bar { grid-template-columns: minmax(0, 1fr) auto; }
+  .stream-discovery-bar > a { min-width: 34px; }
+  .editorial-copy .button-row { display: grid; grid-template-columns: 1fr 1fr; }
+  .editorial-copy .button-row .editorial-link { grid-column: 1 / -1; justify-content: center; }
+  .about-hero { min-height: 570px; }
+  .about-hero-copy p { font-size: .9rem; line-height: 1.7; }
+  .about-page .about-stat-grid div { padding: 28px; }
+  .about-value-grid article { min-height: 220px; padding: 26px; }
+  .contact-layout { gap: 34px; }
+  .footer-grid { gap: 34px; }
+  .footer-bottom { align-items: flex-start; }
+}
+
+@media (max-width: 480px) {
+  .brand > span:last-child { display: none; }
+  .nav { gap: 4px; }
+  .hero { min-height: 750px; padding-top: 280px; }
+  .hero-poster-stack { height: 270px; }
+  .movie-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .movie-card { width: auto; max-width: none; }
+  .card-copy { gap: 6px; }
+  .movie-card h3 { font-size: .84rem; }
+  .card-copy .rating { padding: 4px 6px; font-size: .6rem; }
+  .filters { gap: 8px; }
+  .filters input, .filters select { min-height: 44px; }
+  .modal-box { height: min(62vw, 330px); aspect-ratio: auto; }
+  .about-hero-copy h1 { font-size: clamp(2.55rem, 12vw, 3.6rem); }
+  html[lang="km"] .about-hero-copy h1 { font-size: clamp(2.2rem, 10vw, 3.1rem); line-height: 1.35; }
+}
+
+@media (max-width: 330px) {
+  .language-btn { min-width: 39px; padding-inline: 5px; }
+  .icon-btn { width: 34px; height: 34px; }
+  .brand-mark { width: 36px; height: 36px; flex-basis: 36px; }
+  .movie-grid { grid-template-columns: 1fr; }
+  .movie-card { width: 100%; max-width: 270px; margin-inline: auto; }
+  .hero .button-row,
+  .editorial-copy .button-row { grid-template-columns: 1fr; }
+}
