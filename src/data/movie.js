@@ -373,8 +373,8 @@ const movieRecords = [
     duration: "3h",
     genre: "Science Fiction",
     rating: 8,
-    image: "movie-1.webp",
-    poster: "",
+    image: "movie-16.webp",
+    poster: "movie-16.webp",
     trailerUrl: "https://www.youtube.com/watch?v=ZqS86ZFh3bo",
     videoUrl: "https://www.youtube.com/watch?v=ZqS86ZFh3bo",
     description:

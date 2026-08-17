@@ -1603,15 +1603,34 @@ function MovieEditor({ movie, onSave, onClose }) {
   const handlePosterFile = (event) => {
     const [file] = event.target.files;
     if (!file) return;
-    if (file.size > 1_500_000) {
-      window.alert("Please choose an image smaller than 1.5 MB.");
+    if (file.size > 5_000_000) {
+      window.alert("Please choose an image smaller than 5 MB.");
       event.target.value = "";
       return;
     }
     const reader = new FileReader();
-    reader.onload = () => {
-      setFilePoster(String(reader.result));
-      setPosterPreview(String(reader.result));
+    reader.onload = async () => {
+      const dataUrl = String(reader.result);
+      setFilePoster(dataUrl);
+      setPosterPreview(dataUrl);
+
+      try {
+        const response = await fetch("/api/upload-movie-image", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            dataUrl,
+            filename: file.name,
+            movieId: movie?.id,
+          }),
+        });
+        const result = await response.json();
+        if (result.ok && result.filename) {
+          setFilePoster(result.filename);
+        }
+      } catch {
+        // In static production environment, dataUrl remains as fallback
+      }
     };
     reader.readAsDataURL(file);
   };
