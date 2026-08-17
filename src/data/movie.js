@@ -366,6 +366,22 @@ const movieRecords = [
     director: "Kelsey Mann",
     cast: "Amy Poehler, Maya Hawke, Kensington Tallman",
   },
+  {
+    id: 16,
+    title: "Avengers: Doomsday",
+    year: 2026,
+    duration: "3h",
+    genre: "Science Fiction",
+    rating: 8,
+    image: "movie-1.webp",
+    poster: "",
+    trailerUrl: "https://www.youtube.com/watch?v=ZqS86ZFh3bo",
+    videoUrl: "https://www.youtube.com/watch?v=ZqS86ZFh3bo",
+    description:
+      "The Avengers assemble once again to face a formidable new threat led by Doctor Doom.",
+    director: "Anthony Russo, Joe Russo",
+    cast: "Robert Downey Jr., Pedro Pascal, Vanessa Kirby",
+  },
 ];
 
 // This is the complete seed catalogue. Every exported record contains every

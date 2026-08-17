@@ -35,7 +35,19 @@ const legacySeedTitles = new Set([
   "Dark Passage",
 ]);
 
-export const defaultSiteSettings = DEFAULT_SITE_SETTINGS;
+const syncMovieFile = (movieList) => {
+  if (
+    typeof window !== "undefined" &&
+    (window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1")
+  ) {
+    fetch("/api/sync-movie-data", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ movies: movieList }),
+    }).catch(() => {});
+  }
+};
 
 export function MovieProvider({ children }) {
   const [storedMovies, setStoredMovies] = useLocalStorage(
@@ -195,7 +207,11 @@ export function MovieProvider({ children }) {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       });
-      setStoredMovies((current) => [movie, ...current]);
+      setStoredMovies((current) => {
+        const next = [movie, ...current];
+        syncMovieFile(next);
+        return next;
+      });
       notify(`${movie.title} added to the catalogue.`);
       return movie;
     },
@@ -224,13 +240,17 @@ export function MovieProvider({ children }) {
             updatedAt: new Date().toISOString(),
           });
 
+        let next;
         if (exists) {
-          return current.map((movie) =>
+          next = current.map((movie) =>
             Number(movie.id) === Number(id) ? updatedEntry(movie) : movie,
           );
+        } else {
+          const seedMovie = seedMoviesById.get(Number(id)) || {};
+          next = [...current, updatedEntry(seedMovie)];
         }
-        const seedMovie = seedMoviesById.get(Number(id)) || {};
-        return [...current, updatedEntry(seedMovie)];
+        syncMovieFile(next);
+        return next;
       });
       notify("Movie details updated.");
     },
@@ -239,9 +259,11 @@ export function MovieProvider({ children }) {
 
   const deleteMovie = useCallback(
     (id) => {
-      setStoredMovies((current) =>
-        current.filter((movie) => Number(movie.id) !== Number(id)),
-      );
+      setStoredMovies((current) => {
+        const next = current.filter((movie) => Number(movie.id) !== Number(id));
+        syncMovieFile(next);
+        return next;
+      });
       setFavourites((current) =>
         current.filter((item) => Number(item) !== Number(id)),
       );
@@ -255,6 +277,7 @@ export function MovieProvider({ children }) {
 
   const deleteAllMovies = useCallback(() => {
     setStoredMovies([]);
+    syncMovieFile([]);
     setFavourites([]);
     setWatchlist([]);
     notify("All movies were removed.");
@@ -262,6 +285,7 @@ export function MovieProvider({ children }) {
 
   const restoreSeedMovies = useCallback(() => {
     setStoredMovies(seedMovies);
+    syncMovieFile(seedMovies);
     notify("Seed catalogue restored.");
   }, [setStoredMovies, notify]);
 
@@ -275,6 +299,7 @@ export function MovieProvider({ children }) {
       if (normalized.some((movie) => !movie.title || !movie.genre))
         throw new Error("Every movie needs a title and genre.");
       setStoredMovies(normalized);
+      syncMovieFile(normalized);
       notify(`${normalized.length} movies imported.`);
     },
     [setStoredMovies, notify],
