@@ -4,9 +4,12 @@ export function readStorage(key, fallback) {
     if (!stored) return fallback;
 
     const parsed = JSON.parse(stored);
-    if (Array.isArray(fallback)) return Array.isArray(parsed) ? parsed : fallback;
+    if (Array.isArray(fallback))
+      return Array.isArray(parsed) ? parsed : fallback;
     if (fallback && typeof fallback === "object") {
-      return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : fallback;
+      return parsed && typeof parsed === "object" && !Array.isArray(parsed)
+        ? parsed
+        : fallback;
     }
     if (fallback !== null && typeof parsed !== typeof fallback) return fallback;
     return parsed;

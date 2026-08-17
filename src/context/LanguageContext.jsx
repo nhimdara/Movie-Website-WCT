@@ -45,7 +45,8 @@ const translations = {
   getUpdates: "ទទួលព័ត៌មានថ្មី",
   collection: "បណ្ណាល័យភាពយន្ត",
   findNextStory: "ស្វែងរករឿងបន្ទាប់របស់អ្នក",
-  moviesIntro: "ស្វែងរកភាពយន្តដែលបានជ្រើសរើសសម្រាប់គុណភាព សិល្បៈ និងអារម្មណ៍ដែលនៅសល់យូរ។",
+  moviesIntro:
+    "ស្វែងរកភាពយន្តដែលបានជ្រើសរើសសម្រាប់គុណភាព សិល្បៈ និងអារម្មណ៍ដែលនៅសល់យូរ។",
   yourCollection: "បណ្ណាល័យរបស់អ្នក",
   filmsYouLove: "ភាពយន្តដែលអ្នកស្រឡាញ់",
   favouritesCopy: "បណ្ណាល័យផ្ទាល់ខ្លួននៃរឿងដែលអ្នកចង់ត្រឡប់មកមើលម្ដងទៀត។",
@@ -123,20 +124,26 @@ const translations = {
   animation: "គំនូរជីវចល",
   crime: "ឧក្រិដ្ឋកម្ម",
   aboutHeading: "ភាពយន្តល្អ នឹងស្វែងរកអ្នកឃើញ។",
-  aboutCopy: "CineVault គឺជាបទពិសោធន៍ស្វែងរកភាពយន្ត ដែលបង្កើតឡើងដើម្បីធ្វើឱ្យការជ្រើសរើសអ្វីមួយមើលកាន់តែងាយស្រួល និងមានអារម្មណ៍ល្អ។",
+  aboutCopy:
+    "CineVault គឺជាបទពិសោធន៍ស្វែងរកភាពយន្ត ដែលបង្កើតឡើងដើម្បីធ្វើឱ្យការជ្រើសរើសអ្វីមួយមើលកាន់តែងាយស្រួល និងមានអារម្មណ៍ល្អ។",
   contactHeading: "និយាយគ្នាអំពីភាពយន្ត។",
   contactCopy: "មានសំណួរ មតិយោបល់ ឬភាពយន្តដែលយើងគួរដឹង? សូមផ្ញើសារមកយើង។",
   newsletterTitle: "ភាពយន្តដែលអ្នកចូលចិត្តបន្ទាប់ កំពុងរង់ចាំ។",
-  newsletterCopy: "ទទួលព័ត៌មានភាពយន្តថ្មី និងការណែនាំដែលបានជ្រើសរើសដោយយកចិត្តទុកដាក់។",
-  footerCopy: "ភាពយន្តដែលបានជ្រើសរើសសម្រាប់អ្នកដែលជឿថា រឿងល្អៗគួរត្រូវបានរកឃើញ។",
-  aboutHeroCopy: "យើងជ្រើសរើសភាពយន្តដែលមានសាច់រឿងល្អ រូបភាពស្រស់ស្អាត និងអារម្មណ៍ដែលនៅជាមួយអ្នកយូរ។",
+  newsletterCopy:
+    "ទទួលព័ត៌មានភាពយន្តថ្មី និងការណែនាំដែលបានជ្រើសរើសដោយយកចិត្តទុកដាក់។",
+  footerCopy:
+    "ភាពយន្តដែលបានជ្រើសរើសសម្រាប់អ្នកដែលជឿថា រឿងល្អៗគួរត្រូវបានរកឃើញ។",
+  aboutHeroCopy:
+    "យើងជ្រើសរើសភាពយន្តដែលមានសាច់រឿងល្អ រូបភាពស្រស់ស្អាត និងអារម្មណ៍ដែលនៅជាមួយអ្នកយូរ។",
   ourApproach: "វិធីសាស្ត្ររបស់យើង",
   humanCurated: "ជ្រើសរើសដោយមនុស្ស",
-  humanCuratedCopy: "ភាពយន្តនីមួយៗត្រូវបានជ្រើសរើសដោយយកចិត្តទុកដាក់ មិនមែនដោយក្បួនដោះស្រាយទេ។",
+  humanCuratedCopy:
+    "ភាពយន្តនីមួយៗត្រូវបានជ្រើសរើសដោយយកចិត្តទុកដាក់ មិនមែនដោយក្បួនដោះស្រាយទេ។",
   qualityFirst: "គុណភាពជាមុន",
   qualityFirstCopy: "យើងផ្តោតលើសាច់រឿង សិល្បៈ និងស្នាដៃដែលមានតម្លៃយូរអង្វែង។",
   simpleDiscovery: "ការស្វែងរកងាយស្រួល",
-  simpleDiscoveryCopy: "រចនាឡើងដើម្បីជួយអ្នករកឃើញភាពយន្តល្អ ដោយមិនចាំបាច់រំកិលគ្មានទីបញ្ចប់។",
+  simpleDiscoveryCopy:
+    "រចនាឡើងដើម្បីជួយអ្នករកឃើញភាពយន្តល្អ ដោយមិនចាំបាច់រំកិលគ្មានទីបញ្ចប់។",
   beginConversation: "តើមានភាពយន្តល្អដែលយើងគួរដឹងទេ?",
   beginConversationCopy: "ចែករំលែកការណែនាំ មតិយោបល់ ឬនិយាយជាមួយយើងអំពីភាពយន្ត។",
 };
@@ -148,10 +155,18 @@ export function LanguageProvider({ children }) {
   useEffect(() => {
     document.documentElement.lang = language === "km" ? "km" : "en";
   }, [language]);
-  const value = useMemo(() => ({
-    language,
-    toggleLanguage: () => setLanguage(language === "km" ? "en" : "km"),
-    t: (key, fallback = key) => language === "km" ? translations[key] || fallback : fallback,
-  }), [language, setLanguage]);
-  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
+  const value = useMemo(
+    () => ({
+      language,
+      toggleLanguage: () => setLanguage(language === "km" ? "en" : "km"),
+      t: (key, fallback = key) =>
+        language === "km" ? translations[key] || fallback : fallback,
+    }),
+    [language, setLanguage],
+  );
+  return (
+    <LanguageContext.Provider value={value}>
+      {children}
+    </LanguageContext.Provider>
+  );
 }

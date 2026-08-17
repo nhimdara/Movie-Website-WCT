@@ -11,7 +11,9 @@ const Login = lazy(() => import("../pages/Login"));
 const Register = lazy(() => import("../pages/Register"));
 const About = lazy(() => import("../pages/About"));
 const Contact = lazy(() => import("../pages/Contact"));
-const AdminDashboard = lazy(() => import("../components/dashboard/AdminDashboard"));
+const AdminDashboard = lazy(
+  () => import("../components/dashboard/AdminDashboard"),
+);
 const NotFound = lazy(() => import("../pages/NotFound"));
 
 const routes = {
@@ -25,7 +27,12 @@ const routes = {
   "/register": { page: "register", Component: Register, guestOnly: true },
   "/about": { page: "about", Component: About, protected: true },
   "/contact": { page: "contact", Component: Contact, protected: true },
-  "/dashboard": { page: "dashboard", Component: AdminDashboard, protected: true, roles: ["Administrator"] },
+  "/dashboard": {
+    page: "dashboard",
+    Component: AdminDashboard,
+    protected: true,
+    roles: ["Administrator"],
+  },
 };
 
 export function currentRoute() {
@@ -34,9 +41,24 @@ export function currentRoute() {
 }
 
 export default function AppRoutes() {
-  const { Component, protected: requiresAuth, guestOnly, roles } = currentRoute();
-  if (requiresAuth) return <ProtectedRoute roles={roles}><Component /></ProtectedRoute>;
-  if (guestOnly) return <GuestRoute><Component /></GuestRoute>;
+  const {
+    Component,
+    protected: requiresAuth,
+    guestOnly,
+    roles,
+  } = currentRoute();
+  if (requiresAuth)
+    return (
+      <ProtectedRoute roles={roles}>
+        <Component />
+      </ProtectedRoute>
+    );
+  if (guestOnly)
+    return (
+      <GuestRoute>
+        <Component />
+      </GuestRoute>
+    );
   return <Component />;
 }
 
@@ -45,7 +67,9 @@ function ProtectedRoute({ children, roles }) {
   const isAuthorized = !roles?.length || roles.includes(session?.role);
   useEffect(() => {
     if (!isAuthenticated) {
-      const destination = encodeURIComponent(`${window.location.pathname}${window.location.search}`);
+      const destination = encodeURIComponent(
+        `${window.location.pathname}${window.location.search}`,
+      );
       window.location.replace(`/login?next=${destination}`);
     } else if (!isAuthorized) {
       window.location.replace("/");
@@ -53,7 +77,14 @@ function ProtectedRoute({ children, roles }) {
   }, [isAuthenticated, isAuthorized]);
 
   if (!isAuthenticated || !isAuthorized) {
-    return <main className="auth-redirect" aria-live="polite"><Loading /><p>{isAuthenticated ? "Returning to Home…" : "Checking your session…"}</p></main>;
+    return (
+      <main className="auth-redirect" aria-live="polite">
+        <Loading />
+        <p>
+          {isAuthenticated ? "Returning to Home…" : "Checking your session…"}
+        </p>
+      </main>
+    );
   }
   return children;
 }
@@ -65,7 +96,12 @@ function GuestRoute({ children }) {
   }, [isAuthenticated]);
 
   if (isAuthenticated) {
-    return <main className="auth-redirect" aria-live="polite"><Loading /><p>Opening CineVault…</p></main>;
+    return (
+      <main className="auth-redirect" aria-live="polite">
+        <Loading />
+        <p>Opening CineVault…</p>
+      </main>
+    );
   }
   return children;
 }

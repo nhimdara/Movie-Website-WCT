@@ -1,38 +1,143 @@
-@keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
-@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 @keyframes cinematic-reveal {
-  from { opacity: 0; transform: translate3d(0, 34px, 0); filter: blur(5px); }
-  to { opacity: 1; transform: translate3d(0, 0, 0); filter: blur(0); }
+  from {
+    opacity: 0;
+    transform: translate3d(0, 34px, 0);
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0);
+  }
 }
 @keyframes card-cascade {
-  from { opacity: 0; transform: translate3d(24px, 0, 0) scale(.97); }
-  to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translate3d(24px, 0, 0) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
 }
 @keyframes slider-progress {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }
 @keyframes poster-glint {
-  0%, 68% { transform: translateX(-160%) skewX(-18deg); }
-  100% { transform: translateX(430%) skewX(-18deg); }
+  0%,
+  68% {
+    transform: translateX(-160%) skewX(-18deg);
+  }
+  100% {
+    transform: translateX(430%) skewX(-18deg);
+  }
 }
-.hero-content { animation: rise .8s .1s both; }
-.movie-card { animation: rise .55s both; }
-.movie-card:nth-child(2) { animation-delay: .06s; }
-.movie-card:nth-child(3) { animation-delay: .12s; }
-.movie-card:nth-child(4) { animation-delay: .18s; }
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s, transform .7s; }
-.reveal.visible { opacity: 1; transform: none; }
-.stream-card { animation: card-cascade .55s cubic-bezier(.2,.72,.2,1) both; }
-.stream-card:nth-child(2) { animation-delay: .055s; }
-.stream-card:nth-child(3) { animation-delay: .11s; }
-.stream-card:nth-child(4) { animation-delay: .165s; }
-.stream-card:nth-child(5) { animation-delay: .22s; }
-.stream-card-art::after { content: ""; position: absolute; inset: -30% auto -30% -25%; width: 16%; background: linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent); opacity: 0; pointer-events: none; }
-.stream-card:hover .stream-card-art::after { opacity: 1; animation: poster-glint .85s ease-out both; }
-.hero-dots button.active i { position: relative; overflow: hidden; }
-.hero-dots button.active i span { position: absolute; inset: 0; background: #fff; transform-origin: left; animation: slider-progress 5.5s linear both; }
+.hero-content {
+  animation: rise 0.8s 0.1s both;
+}
+.movie-card {
+  animation: rise 0.55s both;
+}
+.movie-card:nth-child(2) {
+  animation-delay: 0.06s;
+}
+.movie-card:nth-child(3) {
+  animation-delay: 0.12s;
+}
+.movie-card:nth-child(4) {
+  animation-delay: 0.18s;
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s,
+    transform 0.7s;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+.stream-card {
+  animation: card-cascade 0.55s cubic-bezier(0.2, 0.72, 0.2, 1) both;
+}
+.stream-card:nth-child(2) {
+  animation-delay: 0.055s;
+}
+.stream-card:nth-child(3) {
+  animation-delay: 0.11s;
+}
+.stream-card:nth-child(4) {
+  animation-delay: 0.165s;
+}
+.stream-card:nth-child(5) {
+  animation-delay: 0.22s;
+}
+.stream-card-art::after {
+  content: "";
+  position: absolute;
+  inset: -30% auto -30% -25%;
+  width: 16%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.18),
+    transparent
+  );
+  opacity: 0;
+  pointer-events: none;
+}
+.stream-card:hover .stream-card-art::after {
+  opacity: 1;
+  animation: poster-glint 0.85s ease-out both;
+}
+.hero-dots button.active i {
+  position: relative;
+  overflow: hidden;
+}
+.hero-dots button.active i span {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  transform-origin: left;
+  animation: slider-progress 5.5s linear both;
+}
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-delay: 0s !important; transition-duration: .01ms !important; }
-  .reveal, .cinematic-reveal { opacity: 1; transform: none; filter: none; }
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal,
+  .cinematic-reveal {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
 }

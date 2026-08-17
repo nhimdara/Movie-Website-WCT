@@ -5,14 +5,15 @@ import { moviePoster, usePosterFallback } from "../data/movie";
 import useMovies from "../hooks/useMovies";
 import useLanguage from "../hooks/useLanguage";
 
-const translateGenre = (t, genre) => ({
-  "Science Fiction": t("scienceFiction", genre),
-  Drama: t("drama", genre),
-  Thriller: t("thriller", genre),
-  Action: t("action", genre),
-  Animation: t("animation", genre),
-  Crime: t("crime", genre),
-}[genre] || genre);
+const translateGenre = (t, genre) =>
+  ({
+    "Science Fiction": t("scienceFiction", genre),
+    Drama: t("drama", genre),
+    Thriller: t("thriller", genre),
+    Action: t("action", genre),
+    Animation: t("animation", genre),
+    Crime: t("crime", genre),
+  })[genre] || genre;
 
 function StreamingCard({
   movie,
@@ -24,29 +25,71 @@ function StreamingCard({
   onWatchlist,
 }) {
   const { t } = useLanguage();
-  return <article className="stream-card">
-    <div className="stream-card-frame">
-      <a className="stream-card-art" href={`/movie?id=${movie.id}`} aria-label={`View ${movie.title}`}>
-        <img src={moviePoster(movie)} alt="" loading="lazy" decoding="async" onError={usePosterFallback} />
-      </a>
-      <div className="stream-card-shade" />
-      <div className="stream-card-copy">
-        <a href={`/movie?id=${movie.id}`}><h3>{movie.title}</h3></a>
-        <div className="stream-card-meta">
-          <b>{Math.round(movie.rating * 10)}% Match</b>
-          <span>{movie.year}</span>
-          <span>{translateGenre(t, movie.genre)}</span>
+  return (
+    <article className="stream-card">
+      <div className="stream-card-frame">
+        <a
+          className="stream-card-art"
+          href={`/movie?id=${movie.id}`}
+          aria-label={`View ${movie.title}`}
+        >
+          <img
+            src={moviePoster(movie)}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            onError={usePosterFallback}
+          />
+        </a>
+        <div className="stream-card-shade" />
+        <div className="stream-card-copy">
+          <a href={`/movie?id=${movie.id}`}>
+            <h3>{movie.title}</h3>
+          </a>
+          <div className="stream-card-meta">
+            <b>{Math.round(movie.rating * 10)}% Match</b>
+            <span>{movie.year}</span>
+            <span>{translateGenre(t, movie.genre)}</span>
+          </div>
         </div>
+        <div className="stream-card-actions">
+          <button
+            className="stream-play"
+            onClick={() => onPlay(movie)}
+            aria-label={`Play ${movie.title}`}
+          >
+            <PlayIcon />
+          </button>
+          <button
+            className={saved ? "is-added" : ""}
+            onClick={() => onWatchlist(movie.id)}
+            aria-label={`Add ${movie.title} to My List`}
+          >
+            <PlusIcon checked={saved} />
+          </button>
+          <button
+            className={favourite ? "is-added" : ""}
+            onClick={() => onFavourite(movie.id)}
+            aria-label={`Favourite ${movie.title}`}
+          >
+            <HeartIcon filled={favourite} />
+          </button>
+          <a
+            className="stream-more"
+            href={`/movie?id=${movie.id}`}
+            aria-label={`More information about ${movie.title}`}
+          >
+            ⌄
+          </a>
+        </div>
+        {progress && (
+          <div className="stream-progress" aria-label={`${progress}% watched`}>
+            <i style={{ width: `${progress}%` }} />
+          </div>
+        )}
       </div>
-      <div className="stream-card-actions">
-        <button className="stream-play" onClick={() => onPlay(movie)} aria-label={`Play ${movie.title}`}><PlayIcon /></button>
-        <button className={saved ? "is-added" : ""} onClick={() => onWatchlist(movie.id)} aria-label={`Add ${movie.title} to My List`}><PlusIcon checked={saved} /></button>
-        <button className={favourite ? "is-added" : ""} onClick={() => onFavourite(movie.id)} aria-label={`Favourite ${movie.title}`}><HeartIcon filled={favourite} /></button>
-        <a className="stream-more" href={`/movie?id=${movie.id}`} aria-label={`More information about ${movie.title}`}>⌄</a>
-      </div>
-      {progress && <div className="stream-progress" aria-label={`${progress}% watched`}><i style={{ width: `${progress}%` }} /></div>}
-    </div>
-  </article>;
+    </article>
+  );
 }
 
 function StreamingRow({ title, eyebrow, movies, progress = false, actions }) {
@@ -57,64 +100,120 @@ function StreamingRow({ title, eyebrow, movies, progress = false, actions }) {
   const scroll = (direction) => {
     const track = trackRef.current;
     if (!track) return;
-    track.scrollBy({ left: direction * track.clientWidth * .82, behavior: "smooth" });
+    track.scrollBy({
+      left: direction * track.clientWidth * 0.82,
+      behavior: "smooth",
+    });
   };
 
-  return <section className="stream-row">
-    <header className="stream-row-heading">
-      <div>{eyebrow && <span>{eyebrow}</span>}<h2>{title}</h2></div>
-      <a href="/movies">{t("exploreAll", "Explore all")} <b>›</b></a>
-    </header>
-    <div className="stream-track-shell">
-      <button className="stream-row-arrow stream-row-prev" onClick={() => scroll(-1)} aria-label={`Scroll ${title} left`}>‹</button>
-      <div className="stream-track" ref={trackRef}>
-        {movies.map((movie, index) => <StreamingCard
-          key={`${title}-${movie.id}`}
-          movie={movie}
-          progress={progress ? 28 + ((index * 17) % 57) : null}
-          favourite={actions.favourites.includes(movie.id)}
-          saved={actions.watchlist.includes(movie.id)}
-          onFavourite={actions.onFavourite}
-          onWatchlist={actions.onWatchlist}
-          onPlay={actions.onPlay}
-        />)}
+  return (
+    <section className="stream-row">
+      <header className="stream-row-heading">
+        <div>
+          {eyebrow && <span>{eyebrow}</span>}
+          <h2>{title}</h2>
+        </div>
+        <a href="/movies">
+          {t("exploreAll", "Explore all")} <b>›</b>
+        </a>
+      </header>
+      <div className="stream-track-shell">
+        <button
+          className="stream-row-arrow stream-row-prev"
+          onClick={() => scroll(-1)}
+          aria-label={`Scroll ${title} left`}
+        >
+          ‹
+        </button>
+        <div className="stream-track" ref={trackRef}>
+          {movies.map((movie, index) => (
+            <StreamingCard
+              key={`${title}-${movie.id}`}
+              movie={movie}
+              progress={progress ? 28 + ((index * 17) % 57) : null}
+              favourite={actions.favourites.includes(movie.id)}
+              saved={actions.watchlist.includes(movie.id)}
+              onFavourite={actions.onFavourite}
+              onWatchlist={actions.onWatchlist}
+              onPlay={actions.onPlay}
+            />
+          ))}
+        </div>
+        <button
+          className="stream-row-arrow stream-row-next"
+          onClick={() => scroll(1)}
+          aria-label={`Scroll ${title} right`}
+        >
+          ›
+        </button>
       </div>
-      <button className="stream-row-arrow stream-row-next" onClick={() => scroll(1)} aria-label={`Scroll ${title} right`}>›</button>
-    </div>
-  </section>;
+    </section>
+  );
 }
 
 function EditorialSpotlight({ movie, onPlay, saved, onWatchlist }) {
   const { t } = useLanguage();
   if (!movie) return null;
 
-  return <section className="editorial-spotlight" aria-labelledby="editorial-title">
-    <div className="editorial-art">
-      <img src={moviePoster(movie)} alt="" loading="lazy" decoding="async" onError={usePosterFallback} />
-      <div className="editorial-score">
-        <small>{t("audienceScore", "Audience score")}</small>
-        <b>{Math.round(movie.rating * 10)}<span>%</span></b>
+  return (
+    <section className="editorial-spotlight" aria-labelledby="editorial-title">
+      <div className="editorial-art">
+        <img
+          src={moviePoster(movie)}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          onError={usePosterFallback}
+        />
+        <div className="editorial-score">
+          <small>{t("audienceScore", "Audience score")}</small>
+          <b>
+            {Math.round(movie.rating * 10)}
+            <span>%</span>
+          </b>
+        </div>
       </div>
-    </div>
-    <div className="editorial-copy">
-      <span className="eyebrow">{t("editorsCut", "The editor's cut")}</span>
-      <h2 id="editorial-title">{t("worthNight", "One film. Worth your night.")}</h2>
-      <h3>{movie.title}</h3>
-      <p>{movie.description}</p>
-      <dl>
-        <div><dt>{t("genre", "Genre")}</dt><dd>{movie.genre}</dd></div>
-        <div><dt>{t("released", "Released")}</dt><dd>{movie.year}</dd></div>
-        <div><dt>{t("runtime", "Runtime")}</dt><dd>{movie.duration}</dd></div>
-      </dl>
-      <div className="button-row">
-        <button className="btn btn-primary" onClick={() => onPlay(movie)}><PlayIcon /> {t("watchNow", "Watch now")}</button>
-        <button className={`btn editorial-save${saved ? " is-added" : ""}`} onClick={() => onWatchlist(movie.id)}>
-          <PlusIcon checked={saved} /> {saved ? t("inMyList", "In my list") : t("addToList", "Add to list")}
-        </button>
-        <a className="editorial-link" href={`/movie?id=${movie.id}`}>{t("readStory", "Read the story")} <span>↗</span></a>
+      <div className="editorial-copy">
+        <span className="eyebrow">{t("editorsCut", "The editor's cut")}</span>
+        <h2 id="editorial-title">
+          {t("worthNight", "One film. Worth your night.")}
+        </h2>
+        <h3>{movie.title}</h3>
+        <p>{movie.description}</p>
+        <dl>
+          <div>
+            <dt>{t("genre", "Genre")}</dt>
+            <dd>{movie.genre}</dd>
+          </div>
+          <div>
+            <dt>{t("released", "Released")}</dt>
+            <dd>{movie.year}</dd>
+          </div>
+          <div>
+            <dt>{t("runtime", "Runtime")}</dt>
+            <dd>{movie.duration}</dd>
+          </div>
+        </dl>
+        <div className="button-row">
+          <button className="btn btn-primary" onClick={() => onPlay(movie)}>
+            <PlayIcon /> {t("watchNow", "Watch now")}
+          </button>
+          <button
+            className={`btn editorial-save${saved ? " is-added" : ""}`}
+            onClick={() => onWatchlist(movie.id)}
+          >
+            <PlusIcon checked={saved} />{" "}
+            {saved
+              ? t("inMyList", "In my list")
+              : t("addToList", "Add to list")}
+          </button>
+          <a className="editorial-link" href={`/movie?id=${movie.id}`}>
+            {t("readStory", "Read the story")} <span>↗</span>
+          </a>
+        </div>
       </div>
-    </div>
-  </section>;
+    </section>
+  );
 }
 
 export default function Home() {
@@ -134,11 +233,16 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [subscribeError, setSubscribeError] = useState("");
 
-  const published = movies.filter(movie => movie.status !== "Draft");
-  const recentlyViewed = viewHistory.map(id => movies.find(movie => movie.id === id)).filter(Boolean);
+  const published = movies.filter((movie) => movie.status !== "Draft");
+  const recentlyViewed = viewHistory
+    .map((id) => movies.find((movie) => movie.id === id))
+    .filter(Boolean);
   const topRated = [...published].sort((a, b) => b.rating - a.rating);
   const newReleases = [...published].sort((a, b) => b.year - a.year);
-  const genres = [...new Set(published.map(movie => movie.genre))].slice(0, 6);
+  const genres = [...new Set(published.map((movie) => movie.genre))].slice(
+    0,
+    6,
+  );
   const subscribe = (event) => {
     event.preventDefault();
     const result = addSubscriber(email);
@@ -150,85 +254,140 @@ export default function Home() {
   const rowActions = {
     onFavourite: toggleFavourite,
     onWatchlist: toggleWatchlist,
-    onPlay: movie => movie.videoUrl ? playMovie(movie) : playTrailer(movie),
+    onPlay: (movie) => (movie.videoUrl ? playMovie(movie) : playTrailer(movie)),
     favourites,
     watchlist,
   };
 
-  return <main className="streaming-home">
-    <MovieBanner />
-    <div id="trending" className="stream-catalog">
-      {siteSettings.showGenres && <nav className="stream-genre-nav" aria-label="Browse movie genres">
-        <span>{t("explore", "Explore")}</span>
-        {genres.map(genre =>
-          <a key={genre} href={`/movies?genre=${encodeURIComponent(genre)}`}>{translateGenre(t, genre)}</a>
+  return (
+    <main className="streaming-home">
+      <MovieBanner />
+      <div id="trending" className="stream-catalog">
+        {siteSettings.showGenres && (
+          <nav className="stream-genre-nav" aria-label="Browse movie genres">
+            <span>{t("explore", "Explore")}</span>
+            {genres.map((genre) => (
+              <a
+                key={genre}
+                href={`/movies?genre=${encodeURIComponent(genre)}`}
+              >
+                {translateGenre(t, genre)}
+              </a>
+            ))}
+          </nav>
         )}
-      </nav>}
 
-      <aside className="stream-discovery-bar" aria-label="CineVault collection summary">
-        <div className="discovery-intro">
-          <i aria-hidden="true" />
-          <span><b>{t("curatedTonight", "Curated for tonight")}</b><small>{t("curatedCopy", "Hand-picked stories, no endless scrolling")}</small></span>
-        </div>
-        <dl>
-          <div><dt>{t("films", "Films")}</dt><dd>{published.length}</dd></div>
-          <div><dt>{t("genres", "Genres")}</dt><dd>{genres.length}</dd></div>
-          <div><dt>{t("topScore", "Top score")}</dt><dd>{topRated[0]?.rating ?? "—"}</dd></div>
-        </dl>
-        <a href="/movies">{t("browseVault", "Browse the vault")} <span aria-hidden="true">↗</span></a>
-      </aside>
+        <aside
+          className="stream-discovery-bar"
+          aria-label="CineVault collection summary"
+        >
+          <div className="discovery-intro">
+            <i aria-hidden="true" />
+            <span>
+              <b>{t("curatedTonight", "Curated for tonight")}</b>
+              <small>
+                {t("curatedCopy", "Hand-picked stories, no endless scrolling")}
+              </small>
+            </span>
+          </div>
+          <dl>
+            <div>
+              <dt>{t("films", "Films")}</dt>
+              <dd>{published.length}</dd>
+            </div>
+            <div>
+              <dt>{t("genres", "Genres")}</dt>
+              <dd>{genres.length}</dd>
+            </div>
+            <div>
+              <dt>{t("topScore", "Top score")}</dt>
+              <dd>{topRated[0]?.rating ?? "—"}</dd>
+            </div>
+          </dl>
+          <a href="/movies">
+            {t("browseVault", "Browse the vault")}{" "}
+            <span aria-hidden="true">↗</span>
+          </a>
+        </aside>
 
-      {siteSettings.showContinueWatching && recentlyViewed.length > 0 && <StreamingRow
-        eyebrow={t("becauseWatched", "Because you watched")}
-        title={t("continueWatching", "Continue Watching")}
-        movies={recentlyViewed}
-        progress
-        actions={rowActions}
-      />}
+        {siteSettings.showContinueWatching && recentlyViewed.length > 0 && (
+          <StreamingRow
+            eyebrow={t("becauseWatched", "Because you watched")}
+            title={t("continueWatching", "Continue Watching")}
+            movies={recentlyViewed}
+            progress
+            actions={rowActions}
+          />
+        )}
 
-      {siteSettings.showTopRow && <StreamingRow
-        eyebrow={t("everyoneWatching", "What everyone is watching")}
-        title={t("topTen", siteSettings.topRowTitle)}
-        movies={topRated.slice(0, 10)}
-        actions={rowActions}
-      />}
-      <EditorialSpotlight
-        movie={topRated[0]}
-        onPlay={rowActions.onPlay}
-        saved={topRated[0] ? watchlist.includes(topRated[0].id) : false}
-        onWatchlist={toggleWatchlist}
-      />
-      {siteSettings.showTrending && <StreamingRow
-        title={t("trendingNow", siteSettings.trendingTitle)}
-        movies={published}
-        actions={rowActions}
-      />}
-      {siteSettings.showNewReleases && <StreamingRow
-        eyebrow={t("freshVault", "Fresh from the vault")}
-        title={t("newReleases", siteSettings.newReleasesTitle)}
-        movies={newReleases}
-        actions={rowActions}
-      />}
-      {siteSettings.showGenreRows && ["Science Fiction", "Drama", "Thriller"].map(genre => <StreamingRow
-        key={genre}
-        title={`${translateGenre(t, genre)} ${t("youMightLike", "You Might Like")}`}
-        movies={published.filter(movie => movie.genre === genre)}
-        actions={rowActions}
-      />)}
+        {siteSettings.showTopRow && (
+          <StreamingRow
+            eyebrow={t("everyoneWatching", "What everyone is watching")}
+            title={t("topTen", siteSettings.topRowTitle)}
+            movies={topRated.slice(0, 10)}
+            actions={rowActions}
+          />
+        )}
+        <EditorialSpotlight
+          movie={topRated[0]}
+          onPlay={rowActions.onPlay}
+          saved={topRated[0] ? watchlist.includes(topRated[0].id) : false}
+          onWatchlist={toggleWatchlist}
+        />
+        {siteSettings.showTrending && (
+          <StreamingRow
+            title={t("trendingNow", siteSettings.trendingTitle)}
+            movies={published}
+            actions={rowActions}
+          />
+        )}
+        {siteSettings.showNewReleases && (
+          <StreamingRow
+            eyebrow={t("freshVault", "Fresh from the vault")}
+            title={t("newReleases", siteSettings.newReleasesTitle)}
+            movies={newReleases}
+            actions={rowActions}
+          />
+        )}
+        {siteSettings.showGenreRows &&
+          ["Science Fiction", "Drama", "Thriller"].map((genre) => (
+            <StreamingRow
+              key={genre}
+              title={`${translateGenre(t, genre)} ${t("youMightLike", "You Might Like")}`}
+              movies={published.filter((movie) => movie.genre === genre)}
+              actions={rowActions}
+            />
+          ))}
 
-      {siteSettings.showNewsletter && <section className="stream-newsletter">
-        <div>
-          <span className="eyebrow">{t("newEveryWeek", "New every week")}</span>
-          <h2>{t("newsletterTitle", siteSettings.newsletterTitle)}</h2>
-          <p>{t("newsletterCopy", siteSettings.newsletterCopy)}</p>
-        </div>
-        <form onSubmit={subscribe}>
-          <label className="sr-only" htmlFor="newsletter-email">{t("email", "Email address")}</label>
-          <input id="newsletter-email" value={email} onChange={event => setEmail(event.target.value)} type="email" placeholder={t("email", "Email address")} required />
-          <button className="btn btn-primary">{t("getUpdates", "Get updates")}</button>
-          {subscribeError && <small role="alert">{subscribeError}</small>}
-        </form>
-      </section>}
-    </div>
-  </main>;
+        {siteSettings.showNewsletter && (
+          <section className="stream-newsletter">
+            <div>
+              <span className="eyebrow">
+                {t("newEveryWeek", "New every week")}
+              </span>
+              <h2>{t("newsletterTitle", siteSettings.newsletterTitle)}</h2>
+              <p>{t("newsletterCopy", siteSettings.newsletterCopy)}</p>
+            </div>
+            <form onSubmit={subscribe}>
+              <label className="sr-only" htmlFor="newsletter-email">
+                {t("email", "Email address")}
+              </label>
+              <input
+                id="newsletter-email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                type="email"
+                placeholder={t("email", "Email address")}
+                required
+              />
+              <button className="btn btn-primary">
+                {t("getUpdates", "Get updates")}
+              </button>
+              {subscribeError && <small role="alert">{subscribeError}</small>}
+            </form>
+          </section>
+        )}
+      </div>
+    </main>
+  );
 }

@@ -19,26 +19,46 @@ function AppContent() {
   const isLogin = route.page === "login";
   const isAuthRedirect = route.protected && !isAuthenticated;
   const hidePublicChrome = isDashboard || isLogin || isAuthRedirect;
-  return <>
-    {!hidePublicChrome && <Navbar activePage={route.page} />}
-    <Suspense fallback={<main className="page-shell"><div className="container"><Loading /></div></main>}>
-      <AppRoutes />
-    </Suspense>
-    {!hidePublicChrome && <Footer />}
-    {!hidePublicChrome && <MovieTrailer />}
-    {!hidePublicChrome && <BackToTop />}
-    {!hidePublicChrome && <div className={`toast${toast ? " show" : ""}`} role="status" aria-live="polite">{toast}</div>}
-  </>;
+  return (
+    <>
+      {!hidePublicChrome && <Navbar activePage={route.page} />}
+      <Suspense
+        fallback={
+          <main className="page-shell">
+            <div className="container">
+              <Loading />
+            </div>
+          </main>
+        }
+      >
+        <AppRoutes />
+      </Suspense>
+      {!hidePublicChrome && <Footer />}
+      {!hidePublicChrome && <MovieTrailer />}
+      {!hidePublicChrome && <BackToTop />}
+      {!hidePublicChrome && (
+        <div
+          className={`toast${toast ? " show" : ""}`}
+          role="status"
+          aria-live="polite"
+        >
+          {toast}
+        </div>
+      )}
+    </>
+  );
 }
 
 export default function App() {
-  return <ThemeProvider>
-    <LanguageProvider>
-      <AuthProvider>
-        <MovieProvider>
-          <AppContent />
-        </MovieProvider>
-      </AuthProvider>
-    </LanguageProvider>
-  </ThemeProvider>;
+  return (
+    <ThemeProvider>
+      <LanguageProvider>
+        <AuthProvider>
+          <MovieProvider>
+            <AppContent />
+          </MovieProvider>
+        </AuthProvider>
+      </LanguageProvider>
+    </ThemeProvider>
+  );
 }

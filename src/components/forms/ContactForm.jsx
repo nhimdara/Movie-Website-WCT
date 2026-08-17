@@ -16,15 +16,31 @@ export default function ContactForm() {
     sendMessage(values);
     event.currentTarget.reset();
   };
-  return <form className="form-grid" onSubmit={submit}>
-    <Field label={t("name", "Name")} name="name" minLength="2" />
-    <Field label="Email" name="email" type="email" />
-    <div className="form-group"><label htmlFor="message">{t("message", "Message")}</label><textarea id="message" name="message" required minLength="10" /></div>
-    {error && <p className="field-error" role="alert">{error}</p>}
-    <button className="btn btn-primary">{t("sendMessage", "Send message")} →</button>
-  </form>;
+  return (
+    <form className="form-grid" onSubmit={submit}>
+      <Field label={t("name", "Name")} name="name" minLength="2" />
+      <Field label="Email" name="email" type="email" />
+      <div className="form-group">
+        <label htmlFor="message">{t("message", "Message")}</label>
+        <textarea id="message" name="message" required minLength="10" />
+      </div>
+      {error && (
+        <p className="field-error" role="alert">
+          {error}
+        </p>
+      )}
+      <button className="btn btn-primary">
+        {t("sendMessage", "Send message")} →
+      </button>
+    </form>
+  );
 }
 
 function Field({ label, ...props }) {
-  return <div className="form-group"><label htmlFor={props.name}>{label}</label><input id={props.name} required {...props} /></div>;
+  return (
+    <div className="form-group">
+      <label htmlFor={props.name}>{label}</label>
+      <input id={props.name} required {...props} />
+    </div>
+  );
 }

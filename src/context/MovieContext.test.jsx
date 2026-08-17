@@ -29,12 +29,20 @@ describe("MovieProvider catalogue actions", () => {
         status: "published",
       });
     });
-    expect(result.current.allMovies.some(movie => movie.id === created.id)).toBe(true);
+    expect(
+      result.current.allMovies.some((movie) => movie.id === created.id),
+    ).toBe(true);
 
-    act(() => result.current.updateMovie(created.id, { title: "Updated Premiere" }));
-    expect(result.current.allMovies.find(movie => movie.id === created.id)?.title).toBe("Updated Premiere");
+    act(() =>
+      result.current.updateMovie(created.id, { title: "Updated Premiere" }),
+    );
+    expect(
+      result.current.allMovies.find((movie) => movie.id === created.id)?.title,
+    ).toBe("Updated Premiere");
 
     act(() => result.current.deleteMovie(created.id));
-    expect(result.current.allMovies.some(movie => movie.id === created.id)).toBe(false);
+    expect(
+      result.current.allMovies.some((movie) => movie.id === created.id),
+    ).toBe(false);
   });
 });

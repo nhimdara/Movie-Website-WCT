@@ -21,15 +21,28 @@ export default function RegisterForm() {
     notify("Account created. You can now sign in.");
     window.location.assign("/login");
   };
-  return <form className="form-grid" onSubmit={submit}>
-    <Field label="Name" name="name" minLength="2" />
-    <Field label="Email" name="email" type="email" />
-    <Field label="Password" name="password" type="password" minLength="6" />
-    {error && <p className="field-error" role="alert">{error}</p>}
-    <button className="btn btn-primary" disabled={loading}>{loading ? "Creating account…" : "Create account →"}</button>
-  </form>;
+  return (
+    <form className="form-grid" onSubmit={submit}>
+      <Field label="Name" name="name" minLength="2" />
+      <Field label="Email" name="email" type="email" />
+      <Field label="Password" name="password" type="password" minLength="6" />
+      {error && (
+        <p className="field-error" role="alert">
+          {error}
+        </p>
+      )}
+      <button className="btn btn-primary" disabled={loading}>
+        {loading ? "Creating account…" : "Create account →"}
+      </button>
+    </form>
+  );
 }
 
 function Field({ label, ...props }) {
-  return <div className="form-group"><label htmlFor={props.name}>{label}</label><input id={props.name} required {...props} /></div>;
+  return (
+    <div className="form-group">
+      <label htmlFor={props.name}>{label}</label>
+      <input id={props.name} required {...props} />
+    </div>
+  );
 }

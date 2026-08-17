@@ -6,11 +6,13 @@ const imageRoot = path.resolve("public/images");
 
 async function findImages(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
-  const nested = await Promise.all(entries.map(async entry => {
-    const filePath = path.join(directory, entry.name);
-    if (entry.isDirectory()) return findImages(filePath);
-    return /\.(jpe?g|png)$/i.test(entry.name) ? [filePath] : [];
-  }));
+  const nested = await Promise.all(
+    entries.map(async (entry) => {
+      const filePath = path.join(directory, entry.name);
+      if (entry.isDirectory()) return findImages(filePath);
+      return /\.(jpe?g|png)$/i.test(entry.name) ? [filePath] : [];
+    }),
+  );
   return nested.flat();
 }
 
