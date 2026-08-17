@@ -35,6 +35,8 @@ const legacySeedTitles = new Set([
   "Dark Passage",
 ]);
 
+export const defaultSiteSettings = DEFAULT_SITE_SETTINGS;
+
 const syncMovieFile = (movieList) => {
   if (
     typeof window !== "undefined" &&
