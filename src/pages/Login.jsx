@@ -12,7 +12,7 @@ export default function Login() {
         <div className="login-visual-overlay" />
         <div className="login-visual-brand">
           <span className={siteSettings.logo ? "has-logo" : ""}>
-            {siteSettings.logo ? <img src={siteSettings.logo} alt="" /> : "CV"}
+            {siteSettings.logo ? <img src={siteSettings.logo} alt="" /> : "MN"}
           </span>
           <b>{siteSettings.brandName}</b>
         </div>
@@ -40,7 +40,7 @@ export default function Login() {
       <section className="login-panel">
         <div className="login-mobile-brand">
           <span className={siteSettings.logo ? "has-logo" : ""}>
-            {siteSettings.logo ? <img src={siteSettings.logo} alt="" /> : "CV"}
+            {siteSettings.logo ? <img src={siteSettings.logo} alt="" /> : "MN"}
           </span>
           <b>{siteSettings.brandName}</b>
         </div>

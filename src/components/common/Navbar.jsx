@@ -160,7 +160,7 @@ export default function Navbar({ activePage }) {
                         ?.split(/\s+/)
                         .map((part) => part[0])
                         .join("")
-                        .slice(0, 2) || "CV"
+                        .slice(0, 2) || "MN"
                     )}
                   </span>
                   <b>{session.name?.split(" ")[0] || "Account"}</b>

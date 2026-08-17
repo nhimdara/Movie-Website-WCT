@@ -200,6 +200,21 @@ export function MovieProvider({ children }) {
   );
 
   useEffect(() => {
+    if (
+      storedSiteSettings?.brandName === "CineVault" ||
+      !storedSiteSettings?.brandName
+    ) {
+      setStoredSiteSettings((current) => ({
+        ...defaultSiteSettings,
+        ...current,
+        brandName: "Movie Net",
+        heroLabel: "Movie Net Original",
+        topRowTitle: "Top 10 on Movie Net Today",
+      }));
+    }
+  }, [storedSiteSettings?.brandName, setStoredSiteSettings]);
+
+  useEffect(() => {
     if (allMovies.length > storedMovies.length) {
       setStoredMovies(allMovies);
     }
