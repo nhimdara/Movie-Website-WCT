@@ -119,9 +119,13 @@ export const MOVIE_DEFAULTS = {
 };
 
 export function createMovieRecord(movie = {}) {
+  const poster = movie.poster || movie.image || "";
+  const image = movie.image || movie.poster || "";
   return {
     ...MOVIE_DEFAULTS,
     ...movie,
+    poster,
+    image,
     id: Number(movie.id) || 0,
     year: Number(movie.year) || MOVIE_DEFAULTS.year,
     rating: Number(movie.rating) || 0,
@@ -376,10 +380,11 @@ export const genres = [
   "Drama",
 ];
 export const moviePoster = (movie) => {
-  const source = movie?.poster || movie?.image || "movie-1.jpg";
-  return /^(https?:|data:|blob:|\/)/i.test(source)
-    ? source
-    : `/images/movies/${source.replace(/\.jpe?g$/i, ".webp")}`;
+  const source = movie?.poster || movie?.image;
+  if (!source) return "/images/movies/movie-1.webp";
+  if (/^(https?:|data:|blob:|\/)/i.test(source)) return source;
+  if (/^(images\/|assets\/)/i.test(source)) return `/${source}`;
+  return `/images/movies/${source.replace(/\.jpe?g$/i, ".webp")}`;
 };
 export const usePosterFallback = (event) => {
   const image = event.currentTarget;

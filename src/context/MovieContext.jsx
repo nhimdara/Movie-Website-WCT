@@ -71,30 +71,78 @@ export function MovieProvider({ children }) {
   const [trailer, setTrailer] = useState(null);
   const [toast, setToast] = useState("");
   const toastTimerRef = useRef(null);
-  const allMovies = useMemo(
-    () =>
-      storedMovies.map((movie) => {
-        const seedMovie = seedMoviesById.get(Number(movie.id));
-        const migratedMovie =
-          seedMovie && legacySeedTitles.has(movie.title)
-            ? {
-                ...movie,
-                ...seedMovie,
-                poster: movie.poster || seedMovie.poster,
-                status: movie.status || seedMovie.status,
-              }
-            : { ...seedMovie, ...movie };
+  const allMovies = useMemo(() => {
+    if (!Array.isArray(storedMovies)) return seedMovies;
+    const storedIds = new Set(storedMovies.map((movie) => Number(movie.id)));
+    const storedTitles = new Set(
+      storedMovies.map((movie) => movie.title?.toLowerCase().trim()),
+    );
+
+    const mergedStored = storedMovies.map((movie) => {
+      const seedMovie = seedMoviesById.get(Number(movie.id));
+      if (!seedMovie) {
+        return createMovieRecord(movie);
+      }
+
+      const isLegacyMigrated = legacySeedTitles.has(movie.title);
+
+      // If the movie was customized by the user in the admin dashboard (has updatedAt):
+      if (movie.updatedAt) {
         return createMovieRecord({
-          ...migratedMovie,
-          image: seedMovie?.image || movie.image || "",
-          // Built-in catalogue links come from the current source data so an old
-          // localStorage snapshot cannot keep serving outdated trailer URLs.
-          trailerUrl: seedMovie?.trailerUrl || movie.trailerUrl || "",
-          videoUrl: seedMovie?.videoUrl || movie.videoUrl || "",
+          ...seedMovie,
+          ...movie,
+          poster:
+            movie.poster ||
+            movie.image ||
+            seedMovie.poster ||
+            seedMovie.image ||
+            "",
+          image:
+            movie.image ||
+            movie.poster ||
+            seedMovie.image ||
+            seedMovie.poster ||
+            "",
         });
-      }),
-    [storedMovies],
-  );
+      }
+
+      // Otherwise, this is a seed movie from data.js: keep latest values from data.js
+      const poster =
+        (isLegacyMigrated ? movie.poster : "") ||
+        seedMovie.poster ||
+        seedMovie.image ||
+        movie.poster ||
+        movie.image ||
+        "";
+      const image =
+        seedMovie.image ||
+        seedMovie.poster ||
+        movie.image ||
+        movie.poster ||
+        "";
+
+      return createMovieRecord({
+        ...movie,
+        ...seedMovie,
+        poster,
+        image,
+        trailerUrl: seedMovie.trailerUrl || movie.trailerUrl || "",
+        videoUrl: seedMovie.videoUrl || movie.videoUrl || "",
+        status: movie.status || seedMovie.status || "published",
+      });
+    });
+
+    // Include any new movies added directly in data.js (seedMovies) that aren't in storedMovies yet:
+    const newSeedMovies = seedMovies
+      .filter(
+        (seed) =>
+          !storedIds.has(Number(seed.id)) &&
+          !storedTitles.has(seed.title?.toLowerCase().trim()),
+      )
+      .map(createMovieRecord);
+
+    return [...mergedStored, ...newSeedMovies];
+  }, [storedMovies]);
   const movies = useMemo(
     () => allMovies.filter((movie) => movie.status === "published"),
     [allMovies],
@@ -132,12 +180,20 @@ export function MovieProvider({ children }) {
 
   const addMovie = useCallback(
     (details) => {
-      const nextId =
-        Math.max(0, ...storedMovies.map((movie) => Number(movie.id) || 0)) + 1;
+      const allIds = [
+        ...storedMovies.map((movie) => Number(movie.id) || 0),
+        ...seedMovies.map((movie) => Number(movie.id) || 0),
+      ];
+      const nextId = (allIds.length ? Math.max(...allIds) : 0) + 1;
+      const poster = details.poster || details.image || "";
+      const image = details.image || details.poster || "";
       const movie = createMovieRecord({
         ...details,
+        poster,
+        image,
         id: nextId,
         createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       });
       setStoredMovies((current) => [movie, ...current]);
       notify(`${movie.title} added to the catalogue.`);
@@ -148,18 +204,34 @@ export function MovieProvider({ children }) {
 
   const updateMovie = useCallback(
     (id, details) => {
-      setStoredMovies((current) =>
-        current.map((movie) =>
-          Number(movie.id) === Number(id)
-            ? createMovieRecord({
-                ...movie,
-                ...details,
-                id: Number(id),
-                updatedAt: new Date().toISOString(),
-              })
-            : movie,
-        ),
-      );
+      const poster = details.poster !== undefined ? details.poster : undefined;
+      const image =
+        details.image !== undefined
+          ? details.image
+          : poster !== undefined
+            ? poster
+            : undefined;
+
+      setStoredMovies((current) => {
+        const exists = current.some((movie) => Number(movie.id) === Number(id));
+        const updatedEntry = (baseMovie) =>
+          createMovieRecord({
+            ...baseMovie,
+            ...details,
+            ...(poster !== undefined ? { poster } : {}),
+            ...(image !== undefined ? { image } : {}),
+            id: Number(id),
+            updatedAt: new Date().toISOString(),
+          });
+
+        if (exists) {
+          return current.map((movie) =>
+            Number(movie.id) === Number(id) ? updatedEntry(movie) : movie,
+          );
+        }
+        const seedMovie = seedMoviesById.get(Number(id)) || {};
+        return [...current, updatedEntry(seedMovie)];
+      });
       notify("Movie details updated.");
     },
     [setStoredMovies, notify],

@@ -1658,14 +1658,15 @@ function MovieEditor({ movie, onSave, onClose }) {
       window.alert("Full movie URL must start with http:// or https://.");
       return;
     }
+    const posterValue = filePoster || posterUrl;
     onSave({
       title: values.title.trim(),
       year: Number(values.year),
       duration: values.duration.trim(),
       genre: values.genre,
       rating: Number(values.rating),
-      poster: filePoster || posterUrl,
-      image: movie?.image || "",
+      poster: posterValue,
+      image: posterValue || movie?.image || "",
       trailerUrl: fileTrailer || trailerUrl,
       videoUrl,
       description: values.description.trim(),
@@ -1759,17 +1760,22 @@ function MovieEditor({ movie, onSave, onClose }) {
               />
             </label>
             <label className="wide">
-              <span>Poster URL</span>
+              <span>Poster URL / Image filename</span>
               <input
                 name="poster"
-                placeholder="https://example.com/poster.jpg"
+                placeholder="https://example.com/poster.jpg or movie-1.webp"
                 defaultValue={
-                  movie?.poster?.startsWith("data:") ? "" : movie?.poster || ""
+                  movie?.poster?.startsWith("data:")
+                    ? ""
+                    : movie?.poster || movie?.image || ""
                 }
                 onChange={(event) => {
+                  const val = event.target.value.trim();
                   setFilePoster("");
                   setPosterPreview(
-                    event.target.value || moviePoster(movie || {}),
+                    val
+                      ? moviePoster({ poster: val })
+                      : moviePoster(movie || {}),
                   );
                 }}
               />
