@@ -279,7 +279,7 @@ export default function Home() {
 
         <aside
           className="stream-discovery-bar"
-          aria-label="CineVault collection summary"
+          aria-label="Movie Net collection summary"
         >
           <div className="discovery-intro">
             <i aria-hidden="true" />

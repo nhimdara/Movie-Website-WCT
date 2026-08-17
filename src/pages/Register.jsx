@@ -7,7 +7,7 @@ export default function Register() {
     <main className="page-shell">
       <div className="container auth-shell">
         <header className="page-intro">
-          <span className="eyebrow">{t("join", "Join CineVault")}</span>
+          <span className="eyebrow">{t("join", "Join Movie Net")}</span>
           <h1>{t("startCollection", "Start your collection.")}</h1>
         </header>
         <section className="content-card">

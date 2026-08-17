@@ -105,6 +105,7 @@ export function MovieProvider({ children }) {
         return createMovieRecord({
           ...seedMovie,
           ...movie,
+          status: movie.status || "published",
           poster:
             movie.poster ||
             movie.image ||
@@ -165,6 +166,29 @@ export function MovieProvider({ children }) {
     () => ({
       ...defaultSiteSettings,
       ...storedSiteSettings,
+      featuredMovieId:
+        storedSiteSettings.featuredMovieId ||
+        defaultSiteSettings.featuredMovieId,
+      brandName:
+        !storedSiteSettings.brandName ||
+        storedSiteSettings.brandName === "CineVault"
+          ? defaultSiteSettings.brandName
+          : storedSiteSettings.brandName,
+      heroLabel:
+        !storedSiteSettings.heroLabel ||
+        storedSiteSettings.heroLabel === "CineVault Original"
+          ? defaultSiteSettings.heroLabel
+          : storedSiteSettings.heroLabel,
+      topRowTitle:
+        !storedSiteSettings.topRowTitle ||
+        storedSiteSettings.topRowTitle === "Top 10 on CineVault Today"
+          ? defaultSiteSettings.topRowTitle
+          : storedSiteSettings.topRowTitle,
+      aboutCopy:
+        !storedSiteSettings.aboutCopy ||
+        storedSiteSettings.aboutCopy.includes("CineVault")
+          ? defaultSiteSettings.aboutCopy
+          : storedSiteSettings.aboutCopy,
       // Keep the new project logo visible for browsers that saved the old empty default.
       logo:
         !storedSiteSettings.logo ||
@@ -174,6 +198,12 @@ export function MovieProvider({ children }) {
     }),
     [storedSiteSettings],
   );
+
+  useEffect(() => {
+    if (allMovies.length > storedMovies.length) {
+      setStoredMovies(allMovies);
+    }
+  }, [allMovies, storedMovies.length, setStoredMovies]);
 
   useEffect(() => () => window.clearTimeout(toastTimerRef.current), []);
 

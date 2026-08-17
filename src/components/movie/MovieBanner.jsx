@@ -43,7 +43,7 @@ export default function MovieBanner() {
     return (
       <section className="hero">
         <div className="hero-content">
-          <span className="eyebrow">CineVault Studio</span>
+          <span className="eyebrow">Movie Net Studio</span>
           <h1>
             Your next story
             <br />

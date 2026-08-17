@@ -1,6 +1,6 @@
-# CineVault
+# Movie Net
 
-CineVault is a complete responsive multi-page movie discovery website built with React 19, Vite, semantic JSX, and modular CSS.
+Movie Net is a complete responsive multi-page movie discovery website built with React 19, Vite, semantic JSX, and modular CSS.
 
 ## Features
 

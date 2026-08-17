@@ -54,21 +54,21 @@ export default function Login() {
             <p>
               {t(
                 "signIn",
-                "Enter your details to continue to CineVault Studio.",
+                "Enter your details to continue to Movie Net Studio.",
               )}
             </p>
           </header>
           <LoginForm />
           <p className="login-register">
-            {t("join", "New to CineVault?")}{" "}
+            {t("join", "New to Movie Net?")}{" "}
             <a href="/register">{t("createAccount", "Create an account")}</a>
           </p>
           <p className="login-demo-note">
-            Demo: <b>admin@cinevault.com</b> / <b>admin123</b>
+            Demo: <b>admin@movienet.com</b> / <b>admin123</b>
           </p>
         </div>
         <footer>
-          <span>© 2026 CineVault</span>
+          <span>© 2026 Movie Net</span>
           <a href="/contact">{t("contact", "Need help?")}</a>
         </footer>
       </section>

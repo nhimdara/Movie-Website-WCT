@@ -26,12 +26,12 @@ export const DEFAULT_PREFERENCES = Object.freeze({
 });
 
 export const DEFAULT_SITE_SETTINGS = Object.freeze({
-  brandName: "CineVault",
+  brandName: "Movie Net",
   logo: "/images/branding/movie-logo.webp",
-  heroLabel: "CineVault Original",
+  heroLabel: "Movie Net Original",
   heroNote: "Featured this week",
-  featuredMovieId: "",
-  topRowTitle: "Top 10 on CineVault Today",
+  featuredMovieId: 16,
+  topRowTitle: "Top 10 on Movie Net Today",
   trendingTitle: "Trending Now",
   newReleasesTitle: "New Releases",
   newsletterTitle: "Your next obsession is waiting.",
@@ -39,11 +39,11 @@ export const DEFAULT_SITE_SETTINGS = Object.freeze({
     "Get fresh releases and hand-picked recommendations sent to your inbox.",
   footerTagline:
     "Thoughtfully curated films for people who believe every great story deserves to be found.",
-  contactEmail: "hello@cinevault.example",
+  contactEmail: "hello@movienet.example",
   location: "Phnom Penh, Cambodia",
   aboutHeading: "Good films find you.",
   aboutCopy:
-    "CineVault is a movie discovery experience created around a simple idea: choosing what to watch should feel inspiring.",
+    "Movie Net is a movie discovery experience created around a simple idea: choosing what to watch should feel inspiring.",
   contactHeading: "Let’s talk cinema.",
   contactCopy:
     "Questions, feedback or a film we should know about? Send us a note.",
@@ -95,7 +95,7 @@ export const INITIAL_REVIEWS = Object.freeze([
 
 export const DEMO_ADMIN = Object.freeze({
   name: "Alex Morgan",
-  email: "admin@cinevault.com",
+  email: "admin@movienet.com",
   password: "admin123",
   role: "Administrator",
 });
@@ -375,6 +375,7 @@ const movieRecords = [
     rating: 8,
     image: "movie-16.webp",
     poster: "movie-16.webp",
+    status: "published",
     trailerUrl: "https://www.youtube.com/watch?v=ZqS86ZFh3bo",
     videoUrl: "https://www.youtube.com/watch?v=ZqS86ZFh3bo",
     description:

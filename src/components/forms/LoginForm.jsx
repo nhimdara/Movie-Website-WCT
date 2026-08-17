@@ -29,7 +29,7 @@ export default function LoginForm() {
   };
 
   const useDemoAccount = () => {
-    setEmail("admin@cinevault.com");
+    setEmail("admin@movienet.com");
     setPassword("admin123");
     setError("");
   };

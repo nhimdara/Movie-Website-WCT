@@ -99,7 +99,7 @@ function GuestRoute({ children }) {
     return (
       <main className="auth-redirect" aria-live="polite">
         <Loading />
-        <p>Opening CineVault…</p>
+        <p>Opening Movie Net…</p>
       </main>
     );
   }

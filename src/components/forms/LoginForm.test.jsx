@@ -20,7 +20,7 @@ describe("LoginForm", () => {
       screen.getByRole("button", { name: /fill demo credentials/i }),
     );
     expect(screen.getByLabelText(/email address/i)).toHaveValue(
-      "admin@cinevault.com",
+      "admin@movienet.com",
     );
     expect(screen.getByLabelText(/^password$/i)).toHaveValue("admin123");
   });

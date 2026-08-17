@@ -180,7 +180,7 @@ function TrendChart({ range }) {
 }
 
 const sectionCopy = {
-  Movies: ["Movie library", "Manage every title in your CineVault catalogue."],
+  Movies: ["Movie library", "Manage every title in your Movie Net catalogue."],
   Audience: ["Audience", "Understand who is watching and how they engage."],
   Analytics: ["Analytics", "Explore performance across your entire studio."],
   Reviews: [
@@ -608,11 +608,11 @@ function WorkspacePage({
           </div>
           <label className="settings-field">
             <span>Studio name</span>
-            <input defaultValue="CineVault Studio" />
+            <input defaultValue="Movie Net Studio" />
           </label>
           <label className="settings-field">
             <span>Contact email</span>
-            <input type="email" defaultValue="admin@cinevault.com" />
+            <input type="email" defaultValue="admin@movienet.com" />
           </label>
           <div className="settings-switches">
             {[
@@ -965,7 +965,7 @@ function WorkspaceHeader({ active, action }) {
   return (
     <section className="workspace-header">
       <div>
-        <p className="admin-kicker">CineVault Studio</p>
+        <p className="admin-kicker">Movie Net Studio</p>
         <h1>{title}</h1>
         <span>{copy}</span>
       </div>
